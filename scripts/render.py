@@ -106,7 +106,9 @@ def main() -> int:
     args = parser.parse_args()
 
     cfg = load_config(args.config)
-    repo_root = Path(__file__).resolve().parent.parent
+    # Repo root = cwd (respect where user runs script from, not script location).
+    # This lets tests + tools point render at any directory.
+    repo_root = Path.cwd()
     dist = repo_root / "dist"
 
     if args.clean and dist.exists():

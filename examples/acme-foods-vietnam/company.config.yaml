@@ -1,0 +1,209 @@
+# Example: Acme Foods Vietnam — F&B công ty hư cấu
+# Mô phỏng: 1000 đơn/ngày, TikTok Shop + Shopee, 9 phòng ban
+# V4.1 Execution-First taxonomy mặc định (7 SPACE, 13 TYPE)
+
+company:
+  name: "Acme Foods Vietnam"
+  short_name: "Acme"
+  industry: "F&B / Gia vị"
+  founded_year: 2020
+  hq_country: "VN"
+  legal_entities:
+    - "Acme Foods Co., Ltd"
+    - "Acme Distribution JSC"
+
+lark:
+  domain: "larksuite.com"
+  tenant_subdomain: "acme"
+  region: "sg"
+  wiki_root_token: "Yix7wqEXAMPLE123ACME"
+  wiki_root_url: "https://acme.sg.larksuite.com/wiki/Yix7wqEXAMPLE123ACME"
+  master_index:
+    node_token: "UxOkEXAMPLE123ACME"
+    obj_token: "Vy3REXAMPLE123ACME"
+
+taxonomy:
+  version: "v4.1"
+  philosophy: "execution-first"
+
+  spaces:
+    - { code: SYS, name: "Wiki Operating System", order: "00", icon: "⚙️", owner: "IT" }
+    - { code: GEN, name: "Chung / General", order: "01", icon: "🏢", owner: "HCNS" }
+    - { code: INT, name: "Nội bộ / Internal", order: "02", icon: "🤝", owner: "HCNS + Kế toán" }
+    - { code: OPS, name: "Vận hành / Operations", order: "03", icon: "⚡", owner: "Operations Lead" }
+    - { code: BOD, name: "Ban giám đốc / Board", order: "04", icon: "👔", owner: "CEO + BOD" }
+    - { code: TMP, name: "Templates", order: "05", icon: "📋", owner: "Admin" }
+    - { code: ARC, name: "Archive", order: "99", icon: "🗄", owner: "Admin", append_only: true }
+
+  page_types:
+    - { code: HUB, name: "Hub", question: "Tôi đang ở đâu trong luồng?", mandatory_per_section: true }
+    - { code: MST, name: "Master", question: "Luật gốc / dữ liệu gốc là gì?", sub_types: [bridge, standalone] }
+    - { code: PROC, name: "Process", question: "Ai làm, làm khi nào?", new_in_v41: true }
+    - { code: SOP, name: "SOP", question: "Tôi phải làm từng bước gì?" }
+    - { code: CHK, name: "Checklist", question: "Tôi đã làm đủ chưa?" }
+    - { code: TMP, name: "Template", question: "Tôi dùng mẫu nào?" }
+    - { code: PBK, name: "Playbook", question: "Lệch / lỗi / có nhánh?" }
+    - { code: DBD, name: "Dashboard", question: "Kết quả có ổn không?", requires_real_data: true }
+    - { code: POL, name: "Policy", scope: "external_only", mandatory_sections: 8 }
+    - { code: DIC, name: "Dictionary" }
+    - { code: GDL, name: "Guideline", new_in_v41: true }
+    - { code: LOG, name: "Log" }
+    - { code: IDX, name: "Index" }
+
+  sections:
+    SYS:
+      - { code: "SYS-00", name: "Wiki Operating System" }
+      - { code: "SYS-01", name: "Quy tắc hệ thống" }
+    GEN:
+      - { code: "GEN-01", name: "Nền tảng công ty" }
+      - { code: "GEN-02", name: "Nhân viên mới" }
+      - { code: "GEN-03", name: "Công cụ & hệ thống" }
+      - { code: "GEN-04", name: "Thuật ngữ & định nghĩa" }
+    INT:
+      - { code: "INT-HR", name: "Nhân sự" }
+      - { code: "INT-FIN", name: "Kế toán" }
+      - { code: "INT-O3K", name: "Mục tiêu & KPI" }
+      - { code: "INT-XFN", name: "Phối hợp liên phòng" }
+    OPS:
+      - { code: "OPS-CS", name: "CSKH" }
+      - { code: "OPS-WH", name: "Kho vận" }
+      - { code: "OPS-ECM", name: "Bán hàng đa kênh" }
+      - { code: "OPS-INV", name: "Hoá đơn / Settlement" }
+      - { code: "OPS-PIM", name: "PIM (catalog)" }
+      - { code: "OPS-MFG", name: "Sản xuất / BOM / QC" }
+      - { code: "OPS-MKT", name: "Marketing" }
+      - { code: "OPS-LIVE", name: "Livestream" }
+    BOD:
+      - { code: "BOD-STR", name: "Chiến lược" }
+      - { code: "BOD-FIN", name: "Tài chính quản trị" }
+      - { code: "BOD-HR", name: "Nhân sự cấp cao" }
+      - { code: "BOD-GOV", name: "Governance & Risk" }
+    TMP:
+      - { code: "TMP-GEN", name: "Templates chung" }
+    ARC:
+      - { code: "ARC-OLD", name: "Lưu trữ tài liệu cũ" }
+
+  page_code_format: "{space}-{section_suffix}-{type}-{number:03d}"
+
+hub_rules:
+  master_hub_number: "001"
+  branch_hub_min_pages: 3
+  branch_patterns:
+    - { name: "A — sub-area", example: "OPS-ECM với HUB-001 TikTok / HUB-002 Shopee" }
+    - { name: "B — audience", example: "OPS-PIM với HUB cho CSKH/MKT/ECM/WH/FIN/LIVE/MFG" }
+    - { name: "C — lifecycle/phase", example: "OPS-LIVE với HUB Trước/Trong/Sau live" }
+    - { name: "D — role", example: "INT-HR với HUB Nhân viên/Leader/HCNS Ops" }
+  hub_parent_required: true
+
+execution_first:
+  enforce: true
+  section_formula:
+    required: ["1 HUB", "1-2 MST", "1 PROC", "3-5 SOP", "1 CHK", "1 TMP", "1 PBK"]
+    optional_when_needed:
+      - "0-1 DBD (chỉ khi có số liệu thật)"
+      - "0-1 DIC (chỉ khi thuật ngữ gây sai thao tác)"
+      - "0-1 GDL (chỉ khi ảnh hưởng hành vi)"
+      - "0-1 POL (chỉ external)"
+  page_purpose_questions:
+    - "Tôi đang ở đâu trong luồng? → HUB"
+    - "Ai làm, làm khi nào? → PROC"
+    - "Tôi phải làm từng bước gì? → SOP"
+    - "Tôi đã làm đủ chưa? → CHK"
+    - "Tôi dùng mẫu nào? → TMP"
+    - "Lệch / lỗi / có nhánh? → PBK"
+    - "Kết quả có ổn không? → DBD"
+    - "Luật gốc / dữ liệu gốc? → MST"
+  rejection_rules:
+    - "Vì nên có (không phục vụ thực thi cụ thể)"
+    - "DIC mà thuật ngữ không gây sai thao tác"
+    - "GDL mà guideline không ảnh hưởng cách làm"
+    - "DBD mà chưa có source số liệu thật"
+
+pol_mst_rules:
+  pol_scope: "external_only"
+  mst_types: [bridge, standalone]
+  pol_primary_owner_per_section: true
+  primary_owner_table:
+    "TikTok/Shopee/Web/FB policy": "OPS-ECM"
+    "TikTok Ads / Meta Ads policy": "OPS-ECM"
+    "Luật Lao động + BHXH + NĐ lương": "INT-HR"
+    "Luật Thuế + Hóa đơn điện tử": "INT-FIN"
+    "Luật Quảng cáo": "OPS-MKT"
+    "Luật ATTP + QCVN": "OPS-MFG"
+    "Chuẩn đóng gói VN": "OPS-WH"
+    "NĐ 13/2023 dữ liệu cá nhân": "BOD-GOV"
+    "Luật BVNTD / DN / Cạnh tranh": "BOD-GOV"
+    "ISO / Chuẩn quốc tế": "BOD-GOV"
+  pol_required_sections: 8
+  mst_bridge_required_sections: 5
+  cross_section_rule: "link, không copy"
+
+org:
+  departments:
+    - { code: HCNS, name: "Hành chính – Nhân sự", head_role: "HCNS Lead" }
+    - { code: KT, name: "Kế toán", head_role: "Kế toán trưởng (KTT)" }
+    - { code: KD, name: "Kinh doanh / Sales", head_role: "Sales Lead" }
+    - { code: KHO, name: "Kho vận", head_role: "Warehouse Lead" }
+    - { code: MKT, name: "Marketing", head_role: "Marketing Lead" }
+    - { code: SX, name: "Sản xuất", head_role: "Production Lead" }
+    - { code: CS, name: "CSKH", head_role: "CS Lead" }
+    - { code: LIVE, name: "Livestream", head_role: "Live Host Lead" }
+    - { code: IT, name: "Công nghệ thông tin", head_role: "IT Lead" }
+
+master_registry:
+  - { code: "SYS-00-MST-001", name: "Master Registry", owner: "Wiki Admin", required: true }
+  - { code: "INT-HR-MST-001", name: "MASTER ma trận vị trí & JD", owner: "HCNS Lead", required: true }
+  - { code: "INT-FIN-MST-002", name: "MASTER quy trình lương 18 bước", owner: "KTT", required: true }
+  - { code: "OPS-PIM-MST-001", name: "MASTER SKU List", owner: "Sales Lead", required: true }
+  - { code: "OPS-MFG-MST-001", name: "MASTER BOM per SKU", owner: "Production Lead", required: true }
+  - { code: "OPS-MFG-MST-004", name: "MASTER tiêu chuẩn QC thành phẩm", owner: "QC Lead", required: true }
+  - { code: "OPS-WH-MST-001", name: "MASTER vị trí kho", owner: "Warehouse Lead", required: true }
+  - { code: "OPS-CS-MST-001", name: "MASTER chính sách CSKH", owner: "CS Lead", required: true }
+  - { code: "OPS-INV-MST-001", name: "MASTER Settlement Definition", owner: "KTT", required: true }
+  - { code: "OPS-INV-MST-002", name: "MASTER Fee Dictionary (sàn)", owner: "KTT", required: true }
+  - { code: "OPS-MKT-MST-001", name: "MASTER campaign & tiêu chí duyệt", owner: "Marketing Lead", required: true }
+  - { code: "OPS-LIVE-MST-001", name: "MASTER luật chơi livestream", owner: "Live Host Lead", required: true }
+
+integrations:
+  contributor_group_email: "wiki@acme.com"
+  reviewer_bot_webhook: "https://open.larksuite.com/open-apis/bot/v2/hook/EXAMPLE-WEBHOOK"
+  reviewer_bot_name: "@acme-wiki-reviewer"
+  contributor_group_chat_id: "oc_EXAMPLE_CHAT_ID"
+
+lark_bases:
+  - { name: "HCNS Database", base_token: "bascnEXAMPLE001", purpose: "Nhân sự, JD, KPI" }
+  - { name: "OKR / O3K Tracker", base_token: "bascnEXAMPLE002", purpose: "OKR cycles per quý" }
+  - { name: "Finance Tracker", base_token: "bascnEXAMPLE003", purpose: "Daily bookkeeping" }
+  - { name: "Channel Performance", base_token: "bascnEXAMPLE004", purpose: "Doanh số per kênh + Ads ROI" }
+  - { name: "SKU Catalog", base_token: "bascnEXAMPLE005", purpose: "Master SKU + attributes" }
+  - { name: "Inventory", base_token: "bascnEXAMPLE006", purpose: "Tồn kho real-time" }
+  - { name: "Customer Tickets", base_token: "bascnEXAMPLE007", purpose: "CS tickets + SLA" }
+
+master_index_fields:
+  required:
+    - "Page Code"
+    - "Page Name"
+    - "Space"
+    - "Section"
+    - "Type"
+    - "Hub Parent"
+    - "Owner"
+    - "Reviewer"
+    - "Status"
+    - "Version"
+    - "Security Level"
+    - "Link"
+  recommended:
+    - "Source Type"
+    - "Source URL"
+    - "Effective Date"
+    - "Review Cadence"
+    - "Impacted Pages"
+
+policies:
+  page_status_values: ["⬜ Draft", "🔄 Active", "📋 Deprecated", "✅ Archived"]
+  default_status: "⬜ Draft"
+  publish_requires_review: true
+  review_quorum: 1
+  arc_append_only: true
+  no_renumber_on_rename: true

@@ -15,6 +15,9 @@ htmlcov/
 .env.local
 company.config.yaml
 
+# Exception: example configs DO get committed (they use placeholder tokens)
+!examples/**/company.config.yaml
+
 # Build output
 dist/
 build/

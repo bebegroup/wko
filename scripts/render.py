@@ -33,6 +33,9 @@ class RenderError(Exception):
 
 PAGE_CODE_RE = re.compile(r"^[A-Z]+-[A-Z0-9]+-[A-Z]+-\d{3}$")
 
+# Subdirs trong skills/ và docs/ KHÔNG render (meta artifacts)
+SKIP_SUBDIRS = {"superpowers", "drafts", ".git"}
+
 
 def _filter_upper_dashed(s: str) -> str:
     """Validate & normalize page code."""
@@ -78,6 +81,9 @@ def render_tree(src: Path, dst: Path, ctx: dict[str, Any]) -> int:
     count = 0
     for md in src.rglob("*.md"):
         rel = md.relative_to(src)
+        # Skip meta subdirs (docs/superpowers/, drafts/, etc.)
+        if any(part in SKIP_SUBDIRS for part in rel.parts):
+            continue
         try:
             tmpl = env.get_template(str(rel).replace("\\", "/"))
             out = tmpl.render(**ctx)

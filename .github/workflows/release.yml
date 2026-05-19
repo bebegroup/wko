@@ -61,7 +61,7 @@ jobs:
           tar -czf dist-rendered.tar.gz dist/
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: ${{ steps.ver.outputs.version }}
           body_path: /tmp/release-notes.md

@@ -1,0 +1,1282 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Lark Wiki Thích Cay - Knowledge Base Schema",
+  "version": "1.0.0",
+  "last_updated": "2025-01-15",
+  "description": "Kiến trúc tổng thể Lark Wiki cho Thích Cay - tối ưu cho AI Agent navigation",
+  
+  "workspace": {
+    "id": "workspace_thich_cay",
+    "name": "Lark Workspace Thích Cay",
+    "type": "lark_workspace",
+    "components": [
+      {
+        "id": "lark_chat",
+        "name": "Lark Chat",
+        "type": "messaging",
+        "description": "Nhắn tin, thông báo"
+      },
+      {
+        "id": "lark_base",
+        "name": "Lark Base",
+        "type": "database",
+        "description": "Data, O3K, KPI, lương",
+        "connection_type": "link_xuong"
+      },
+      {
+        "id": "lark_task",
+        "name": "Lark Task",
+        "type": "task_management",
+        "description": "Công việc, checklist"
+      },
+      {
+        "id": "lark_calendar",
+        "name": "Lark Calendar",
+        "type": "calendar",
+        "description": "Lịch, deadline"
+      }
+    ],
+    "wiki_root": "lark_wiki_thich_cay"
+  },
+
+  "wiki": {
+    "id": "lark_wiki_thich_cay",
+    "name": "Lark Wiki Thích Cay",
+    "description": "Toàn bộ kiến thức, quy trình, tài liệu của Thích Cay",
+    "structure": "hierarchical",
+    "levels": [
+      "Space (Không gian)",
+      "Section (Nhóm tài liệu)",
+      "Page (Tài liệu cụ thể)",
+      "Sub-page (Tài liệu con)"
+    ]
+  },
+
+  "spaces": [
+    {
+      "id": "space_1_chung",
+      "name": "THÍCH CAY — CHUNG",
+      "icon": "🏢",
+      "access_level": "public",
+      "description": "Mọi người đều đọc được - không cần phân quyền",
+      "color_code": "blue",
+      "sections": [
+        {
+          "id": "sec_1_1",
+          "name": "Về Thích Cay",
+          "pages": [
+            {
+              "id": "page_1_1_1",
+              "name": "Thích Cay là gì?",
+              "type": "intro",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_1_2",
+              "name": "Sứ mệnh — Tầm nhìn — Giá trị cốt lõi",
+              "type": "vision",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_1_3",
+              "name": "Cơ cấu tổ chức (Ladospice + Delicart)",
+              "type": "org_structure",
+              "has_subpages": false,
+              "glossary_terms": ["Ladospice", "Delicart"]
+            },
+            {
+              "id": "page_1_1_4",
+              "name": "Ai là ai? (tên + vị trí + Lark ID)",
+              "type": "directory",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_1_5",
+              "name": "Lịch sử & Mốc quan trọng",
+              "type": "timeline",
+              "has_subpages": false
+            }
+          ]
+        },
+        {
+          "id": "sec_1_2",
+          "name": "Nhân viên mới",
+          "pages": [
+            {
+              "id": "page_1_2_1",
+              "name": "Đọc trang này trước tiên",
+              "type": "onboarding_start",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_2_2",
+              "name": "Ngày đầu tiên — làm gì từng giờ",
+              "type": "onboarding_day1",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_2_3",
+              "name": "Tuần đầu tiên",
+              "type": "onboarding_week1",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_2_4",
+              "name": "30 ngày thử việc",
+              "type": "onboarding_probation",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_2_5",
+              "name": "Hỏi ai khi cần gì?",
+              "type": "contact_guide",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_2_6",
+              "name": "Nội quy & Chính sách chung",
+              "type": "policy",
+              "has_subpages": false
+            }
+          ]
+        },
+        {
+          "id": "sec_1_3",
+          "name": "Công cụ & Hệ thống",
+          "pages": [
+            {
+              "id": "page_1_3_1",
+              "name": "Danh sách công cụ đang dùng",
+              "type": "tool_list",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_3_2",
+              "name": "Hướng dẫn dùng Lark",
+              "type": "guide",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_3_3",
+              "name": "Hướng dẫn dùng Claude / AI",
+              "type": "guide",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_3_4",
+              "name": "Hướng dẫn dùng MISA",
+              "type": "guide",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_3_5",
+              "name": "Tài khoản cần có — liên hệ ai",
+              "type": "access_guide",
+              "has_subpages": false
+            }
+          ]
+        },
+        {
+          "id": "sec_1_4",
+          "name": "Thuật ngữ & Định nghĩa",
+          "special_type": "glossary_index",
+          "description": "QUAN TRỌNG - Link được từ mọi page",
+          "pages": [
+            {
+              "id": "page_1_4_1",
+              "name": "Thuật ngữ kinh doanh",
+              "type": "glossary",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_4_2",
+              "name": "Thuật ngữ kỹ thuật / IT",
+              "type": "glossary",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_4_3",
+              "name": "Thuật ngữ kế toán — tài chính",
+              "type": "glossary",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_4_4",
+              "name": "Thuật ngữ HCNS",
+              "type": "glossary",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_4_5",
+              "name": "Viết tắt nội bộ Thích Cay",
+              "type": "glossary",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_4_6",
+              "name": "Tên sản phẩm chuẩn (SKU list)",
+              "type": "glossary",
+              "has_subpages": false,
+              "glossary_terms": ["SKU"]
+            }
+          ]
+        },
+        {
+          "id": "sec_1_5",
+          "name": "Templates dùng chung",
+          "pages": [
+            {
+              "id": "page_1_5_1",
+              "name": "Template họp nội bộ",
+              "type": "template",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_5_2",
+              "name": "Template báo cáo sự cố",
+              "type": "template",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_5_3",
+              "name": "Template đề xuất / phê duyệt",
+              "type": "template",
+              "has_subpages": false
+            },
+            {
+              "id": "page_1_5_4",
+              "name": "Template SOP (chuẩn viết quy trình mới)",
+              "type": "template",
+              "has_subpages": false,
+              "glossary_terms": ["SOP"]
+            },
+            {
+              "id": "page_1_5_5",
+              "name": "Template OKR check-in",
+              "type": "template",
+              "has_subpages": false,
+              "glossary_terms": ["O3K"]
+            }
+          ]
+        }
+      ],
+      "estimated_pages": 20,
+      "primary_audience": "all_staff"
+    },
+    {
+      "id": "space_2_van_hanh",
+      "name": "THÍCH CAY — VẬN HÀNH",
+      "icon": "📊",
+      "access_level": "operational_team",
+      "description": "Team kho, sản xuất, bán hàng, CS, MKT",
+      "color_code": "green",
+      "sections": [
+        {
+          "id": "sec_2_1",
+          "name": "Kho & Sản xuất",
+          "pages": [
+            {
+              "id": "page_2_1_1",
+              "name": "Khi có hàng về kho — làm gì?",
+              "type": "sop",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_2_1_1_1",
+                  "name": "Nhập kho NL Ladospice",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_2_1_1_2",
+                  "name": "Nhập kho thành phẩm",
+                  "type": "sop_detail"
+                }
+              ]
+            },
+            {
+              "id": "page_2_1_2",
+              "name": "Khi cần xuất hàng — làm gì?",
+              "type": "sop",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_2_1_2_1",
+                  "name": "Xuất kho theo đơn hàng",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_2_1_2_2",
+                  "name": "Xuất kho NL cho sản xuất",
+                  "type": "sop_detail"
+                }
+              ]
+            },
+            {
+              "id": "page_2_1_3",
+              "name": "Kiểm kê kho (hàng tháng + hàng quý)",
+              "type": "sop",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_1_4",
+              "name": "Xử lý hàng lỗi / hết hạn",
+              "type": "sop",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_1_5",
+              "name": "Quy trình sản xuất",
+              "type": "sop",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_2_1_5_1",
+                  "name": "QC sản phẩm",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_2_1_5_2",
+                  "name": "Xử lý sự cố sản xuất",
+                  "type": "sop_detail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec_2_2",
+          "name": "Đóng gói & Giao hàng",
+          "pages": [
+            {
+              "id": "page_2_2_1",
+              "name": "SOP đóng hàng TikTok Shop",
+              "type": "sop",
+              "has_subpages": false,
+              "glossary_terms": ["SOP"]
+            },
+            {
+              "id": "page_2_2_2",
+              "name": "SOP đóng hàng Shopee",
+              "type": "sop",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_2_3",
+              "name": "Quy cách đóng gói theo SKU",
+              "type": "reference",
+              "has_subpages": false,
+              "glossary_terms": ["SKU"]
+            },
+            {
+              "id": "page_2_2_4",
+              "name": "Xử lý đơn hoàn / hàng hư hỏng",
+              "type": "sop",
+              "has_subpages": false
+            }
+          ]
+        },
+        {
+          "id": "sec_2_3",
+          "name": "Bán hàng",
+          "pages": [
+            {
+              "id": "page_2_3_1",
+              "name": "TikTok Shop",
+              "type": "channel_guide",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_2_3_1_1",
+                  "name": "Xử lý đơn hàng TikTok",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_2_3_1_2",
+                  "name": "Quy trình livestream",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_2_3_1_3",
+                  "name": "Xử lý vi phạm sàn",
+                  "type": "sop_detail"
+                }
+              ]
+            },
+            {
+              "id": "page_2_3_2",
+              "name": "Shopee",
+              "type": "channel_guide",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_2_3_2_1",
+                  "name": "Xử lý đơn hàng Shopee",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_2_3_2_2",
+                  "name": "Flash sale / Chiến dịch",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_2_3_2_3",
+                  "name": "Xử lý vi phạm sàn",
+                  "type": "sop_detail"
+                }
+              ]
+            },
+            {
+              "id": "page_2_3_3",
+              "name": "Facebook & Website",
+              "type": "channel_guide",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_2_3_3_1",
+                  "name": "Xử lý inbox + đơn COD",
+                  "type": "sop_detail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec_2_4",
+          "name": "Chăm sóc khách hàng",
+          "pages": [
+            {
+              "id": "page_2_4_1",
+              "name": "Template trả lời theo tình huống",
+              "type": "template",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_4_2",
+              "name": "Quy trình xử lý khiếu nại",
+              "type": "sop",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_4_3",
+              "name": "Chính sách đổi trả",
+              "type": "policy",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_4_4",
+              "name": "FAQ sản phẩm",
+              "type": "reference",
+              "has_subpages": false
+            }
+          ]
+        },
+        {
+          "id": "sec_2_5",
+          "name": "Marketing & Content",
+          "pages": [
+            {
+              "id": "page_2_5_1",
+              "name": "Brand Voice Thích Cay",
+              "type": "guide",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_5_2",
+              "name": "Lịch content (link Lark Base)",
+              "type": "reference",
+              "has_subpages": false,
+              "lark_base_link": true
+            },
+            {
+              "id": "page_2_5_3",
+              "name": "Quy trình sản xuất content",
+              "type": "sop",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_5_4",
+              "name": "Quy trình chạy Ads",
+              "type": "sop",
+              "has_subpages": false,
+              "glossary_terms": ["ROAS"]
+            },
+            {
+              "id": "page_2_5_5",
+              "name": "Quy trình hợp tác KOC/KOL",
+              "type": "sop",
+              "has_subpages": false,
+              "glossary_terms": ["KOC", "KOL"]
+            },
+            {
+              "id": "page_2_5_6",
+              "name": "Template brief video / ảnh",
+              "type": "template",
+              "has_subpages": false
+            }
+          ]
+        },
+        {
+          "id": "sec_2_6",
+          "name": "Hóa đơn bán hàng",
+          "pages": [
+            {
+              "id": "page_2_6_1",
+              "name": "Quy trình xuất HĐ hàng ngày",
+              "type": "sop",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_2_6_1_1",
+                  "name": "Bảng mapping sàn → MISA",
+                  "type": "reference"
+                },
+                {
+                  "id": "subpage_2_6_1_2",
+                  "name": "Xử lý đơn hoàn — HĐ",
+                  "type": "sop_detail"
+                }
+              ]
+            },
+            {
+              "id": "page_2_6_2",
+              "name": "Đối soát doanh thu cuối tháng",
+              "type": "sop",
+              "has_subpages": false
+            },
+            {
+              "id": "page_2_6_3",
+              "name": "Kê khai thuế GTGT hàng tháng",
+              "type": "sop",
+              "has_subpages": false,
+              "glossary_terms": ["VAT"]
+            }
+          ]
+        }
+      ],
+      "estimated_pages": 35,
+      "primary_audience": "operational_staff"
+    },
+    {
+      "id": "space_3_noi_bo",
+      "name": "THÍCH CAY — NỘI BỘ",
+      "icon": "💰",
+      "access_level": "internal_hcns_accounting",
+      "description": "HCNS + Kế toán — phân quyền theo phòng",
+      "color_code": "amber",
+      "sections": [
+        {
+          "id": "sec_3_1",
+          "name": "HCNS",
+          "pages": [
+            {
+              "id": "page_3_1_1",
+              "name": "Tuyển dụng",
+              "type": "process_group",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_1_1_1",
+                  "name": "Quy trình tuyển dụng 7 bước",
+                  "type": "sop_detail"
+                },
+                {
+                  "id": "subpage_3_1_1_2",
+                  "name": "JD từng vị trí",
+                  "type": "reference"
+                },
+                {
+                  "id": "subpage_3_1_1_3",
+                  "name": "Bộ câu hỏi phỏng vấn",
+                  "type": "reference"
+                }
+              ]
+            },
+            {
+              "id": "page_3_1_2",
+              "name": "Hồ sơ nhân sự",
+              "type": "process_group",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_1_2_1",
+                  "name": "Checklist hồ sơ đầu vào",
+                  "type": "checklist"
+                },
+                {
+                  "id": "subpage_3_1_2_2",
+                  "name": "Hợp đồng lao động",
+                  "type": "reference",
+                  "glossary_terms": ["HĐLĐ"]
+                },
+                {
+                  "id": "subpage_3_1_2_3",
+                  "name": "BHXH — quy trình báo tăng giảm",
+                  "type": "sop_detail"
+                }
+              ]
+            },
+            {
+              "id": "page_3_1_3",
+              "name": "Đào tạo & Phát triển",
+              "type": "process_group",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_1_3_1",
+                  "name": "Training plan hàng quý",
+                  "type": "reference"
+                },
+                {
+                  "id": "subpage_3_1_3_2",
+                  "name": "Career path từng vị trí",
+                  "type": "reference"
+                }
+              ]
+            },
+            {
+              "id": "page_3_1_4",
+              "name": "Văn hóa & Hoạt động",
+              "type": "process_group",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_1_4_1",
+                  "name": "Lịch hoạt động nội bộ",
+                  "type": "reference"
+                },
+                {
+                  "id": "subpage_3_1_4_2",
+                  "name": "eNPS — khảo sát & kết quả",
+                  "type": "reference",
+                  "glossary_terms": ["eNPS"]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec_3_2",
+          "name": "Kế toán",
+          "pages": [
+            {
+              "id": "page_3_2_1",
+              "name": "Phân chia vai trò 3 vị trí KT",
+              "type": "reference",
+              "has_subpages": false,
+              "glossary_terms": ["KTT", "KTTH"]
+            },
+            {
+              "id": "page_3_2_2",
+              "name": "Quy trình lương 18 bước",
+              "type": "sop",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_2_2_1",
+                  "name": "Lịch lương tháng (ngày 26→05)",
+                  "type": "reference"
+                },
+                {
+                  "id": "subpage_3_2_2_2",
+                  "name": "Phiếu bàn giao — tải template",
+                  "type": "template",
+                  "glossary_terms": ["Phiếu bàn giao"]
+                },
+                {
+                  "id": "subpage_3_2_2_3",
+                  "name": "Ma trận phối hợp HCNS-KT",
+                  "type": "reference"
+                }
+              ]
+            },
+            {
+              "id": "page_3_2_3",
+              "name": "Thuế & Tuân thủ",
+              "type": "process_group",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_2_3_1",
+                  "name": "Lịch thuế hàng năm",
+                  "type": "reference"
+                },
+                {
+                  "id": "subpage_3_2_3_2",
+                  "name": "Quy trình khai thuế GTGT",
+                  "type": "sop_detail",
+                  "glossary_terms": ["VAT"]
+                },
+                {
+                  "id": "subpage_3_2_3_3",
+                  "name": "Quyết toán thuế TNCN",
+                  "type": "sop_detail",
+                  "glossary_terms": ["TNCN"]
+                }
+              ]
+            },
+            {
+              "id": "page_3_2_4",
+              "name": "Kho kế toán",
+              "type": "process_group",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_2_4_1",
+                  "name": "Checklist KT Kho hàng tháng",
+                  "type": "checklist"
+                }
+              ]
+            },
+            {
+              "id": "page_3_2_5",
+              "name": "Checklist vận hành",
+              "type": "process_group",
+              "has_subpages": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_2_5_1",
+                  "name": "Checklist KTT hàng tháng",
+                  "type": "checklist"
+                },
+                {
+                  "id": "subpage_3_2_5_2",
+                  "name": "Checklist KTTH hàng tháng",
+                  "type": "checklist"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec_3_3",
+          "name": "O3K & KPI",
+          "pages": [
+            {
+              "id": "page_3_3_1",
+              "name": "Tổng quan hệ thống đo lường",
+              "type": "framework",
+              "has_subpages": true,
+              "lark_base_link": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_3_1_1",
+                  "name": "O3K là gì?",
+                  "type": "concept",
+                  "glossary_terms": ["O3K", "Objective", "KR", "Leading KR", "Lagging KR", "Setup KR"]
+                },
+                {
+                  "id": "subpage_3_3_1_2",
+                  "name": "KPI tháng là gì?",
+                  "type": "concept",
+                  "glossary_terms": ["KPI"]
+                },
+                {
+                  "id": "subpage_3_3_1_3",
+                  "name": "% KPI năm & Quy chế thưởng",
+                  "type": "policy"
+                },
+                {
+                  "id": "subpage_3_3_1_4",
+                  "name": "3 thứ kết nối nhau như thế nào",
+                  "type": "concept"
+                }
+              ]
+            },
+            {
+              "id": "page_3_3_2",
+              "name": "O3K HCNS",
+              "type": "okr_set",
+              "has_subpages": true,
+              "lark_base_link": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_3_2_1",
+                  "name": "O1 — Hồ sơ nhân sự sạch",
+                  "type": "objective_detail"
+                },
+                {
+                  "id": "subpage_3_3_2_2",
+                  "name": "O2 — Quy trình lương 0 lỗi",
+                  "type": "objective_detail"
+                },
+                {
+                  "id": "subpage_3_3_2_3",
+                  "name": "O3 — Tuyển đúng người",
+                  "type": "objective_detail",
+                  "glossary_terms": ["Time to Fill"]
+                },
+                {
+                  "id": "subpage_3_3_2_4",
+                  "name": "O4 — Văn hóa Thích Cay",
+                  "type": "objective_detail",
+                  "glossary_terms": ["eNPS", "Turnover Rate"]
+                }
+              ]
+            },
+            {
+              "id": "page_3_3_3",
+              "name": "O3K Kế toán",
+              "type": "okr_set",
+              "has_subpages": true,
+              "lark_base_link": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_3_3_1",
+                  "name": "O1 — Số liệu sạch",
+                  "type": "objective_detail"
+                },
+                {
+                  "id": "subpage_3_3_3_2",
+                  "name": "O2 — Tuân thủ thuế 0 phạt",
+                  "type": "objective_detail"
+                },
+                {
+                  "id": "subpage_3_3_3_3",
+                  "name": "O3 — Dòng tiền an toàn",
+                  "type": "objective_detail",
+                  "glossary_terms": ["DSO"]
+                },
+                {
+                  "id": "subpage_3_3_3_4",
+                  "name": "O4 — Kho vận hành chuẩn",
+                  "type": "objective_detail"
+                },
+                {
+                  "id": "subpage_3_3_3_5",
+                  "name": "O5 — Team tự vận hành",
+                  "type": "objective_detail"
+                }
+              ]
+            },
+            {
+              "id": "page_3_3_4",
+              "name": "KPI Vận hành",
+              "type": "kpi_set",
+              "has_subpages": true,
+              "lark_base_link": true,
+              "subpages": [
+                {
+                  "id": "subpage_3_3_4_1",
+                  "name": "KPI HCNS",
+                  "type": "kpi_detail"
+                },
+                {
+                  "id": "subpage_3_3_4_2",
+                  "name": "KPI KTT",
+                  "type": "kpi_detail"
+                },
+                {
+                  "id": "subpage_3_3_4_3",
+                  "name": "KPI KTTH",
+                  "type": "kpi_detail"
+                },
+                {
+                  "id": "subpage_3_3_4_4",
+                  "name": "KPI KT Kho",
+                  "type": "kpi_detail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec_3_4",
+          "name": "Quy trình phối hợp",
+          "pages": [
+            {
+              "id": "page_3_4_1",
+              "name": "HCNS ↔ Kế toán",
+              "type": "collaboration_matrix",
+              "has_subpages": false
+            },
+            {
+              "id": "page_3_4_2",
+              "name": "Kho ↔ Kế toán",
+              "type": "collaboration_matrix",
+              "has_subpages": false
+            },
+            {
+              "id": "page_3_4_3",
+              "name": "Bán hàng ↔ Kế toán (hóa đơn)",
+              "type": "collaboration_matrix",
+              "has_subpages": false
+            },
+            {
+              "id": "page_3_4_4",
+              "name": "MKT ↔ Kế toán (chi phí Ads, KOC)",
+              "type": "collaboration_matrix",
+              "has_subpages": false,
+              "glossary_terms": ["KOC"]
+            }
+          ]
+        }
+      ],
+      "estimated_pages": 40,
+      "primary_audience": "hcns_accounting"
+    },
+    {
+      "id": "space_4_bgd",
+      "name": "THÍCH CAY — BAN GIÁM ĐỐC",
+      "icon": "🔒",
+      "access_level": "leadership_only",
+      "description": "CEO + BGD — chiến lược, tài chính, quyết định lớn",
+      "color_code": "red",
+      "sections": [
+        {
+          "id": "sec_4_1",
+          "name": "Chiến lược",
+          "pages": [],
+          "status": "not_detailed_yet"
+        },
+        {
+          "id": "sec_4_2",
+          "name": "Tài chính & Báo cáo",
+          "pages": [],
+          "status": "not_detailed_yet",
+          "glossary_terms": ["P&L"]
+        },
+        {
+          "id": "sec_4_3",
+          "name": "Nhân sự cấp cao",
+          "pages": [],
+          "status": "not_detailed_yet"
+        },
+        {
+          "id": "sec_4_4",
+          "name": "Quyết định & Biên bản",
+          "pages": [],
+          "status": "not_detailed_yet"
+        }
+      ],
+      "estimated_pages": 0,
+      "primary_audience": "ceo_board"
+    }
+  ],
+
+  "glossary": {
+    "id": "glossary_thich_cay",
+    "name": "Thuật ngữ & Định nghĩa Thích Cay",
+    "description": "Tầng đặc biệt - link được từ bất kỳ trang nào",
+    "type": "cross_reference",
+    "color_code": "purple",
+    "structure": "alphabetical",
+    "categories": [
+      {
+        "id": "glossary_a_d",
+        "name": "A–D",
+        "terms": [
+          {
+            "term": "BSC",
+            "full_name": "Balanced Scorecard",
+            "definition": "Bản đồ chiến lược 4 trục: Tài chính, Khách hàng, Quy trình nội bộ, Học hỏi và phát triển",
+            "see_also": ["page_3_3_1"]
+          },
+          {
+            "term": "C&B",
+            "full_name": "Compensation & Benefits",
+            "definition": "Lương, thưởng và phúc lợi",
+            "see_also": []
+          },
+          {
+            "term": "CTV",
+            "full_name": "Cộng tác viên",
+            "definition": "Người làm theo HĐDV, không phải HĐLĐ",
+            "see_also": []
+          },
+          {
+            "term": "Delicart",
+            "full_name": null,
+            "definition": "Pháp nhân thương mại của Thích Cay",
+            "see_also": ["page_1_1_3"]
+          },
+          {
+            "term": "DSO",
+            "full_name": "Days Sales Outstanding",
+            "definition": "Số ngày công nợ phải thu trung bình",
+            "see_also": []
+          }
+        ]
+      },
+      {
+        "id": "glossary_e_k",
+        "name": "E–K",
+        "terms": [
+          {
+            "term": "eNPS",
+            "full_name": "Employee Net Promoter Score",
+            "definition": "Chỉ số hài lòng nhân viên (-100 đến 100). Công thức: % Promoters - % Detractors",
+            "see_also": ["subpage_3_3_2_4"]
+          },
+          {
+            "term": "HĐLĐ",
+            "full_name": "Hợp đồng lao động",
+            "definition": "Do HCNS quản lý. Khác HĐDV",
+            "see_also": []
+          },
+          {
+            "term": "HĐDV",
+            "full_name": "Hợp đồng dịch vụ",
+            "definition": "Do KTT quản lý (CTV, KOC, Agency). Khác HĐLĐ",
+            "see_also": []
+          },
+          {
+            "term": "KPI",
+            "full_name": "Key Performance Indicator",
+            "definition": "Chỉ số đo hiệu suất hàng tháng",
+            "see_also": ["page_3_3_1"]
+          },
+          {
+            "term": "KOC",
+            "full_name": "Key Opinion Consumer",
+            "definition": "Người dùng review sản phẩm",
+            "see_also": []
+          },
+          {
+            "term": "KOL",
+            "full_name": "Key Opinion Leader",
+            "definition": "Người có ảnh hưởng",
+            "see_also": []
+          },
+          {
+            "term": "KR",
+            "full_name": "Key Result",
+            "definition": "Kết quả then chốt trong O3K",
+            "see_also": ["subpage_3_3_1_1"]
+          },
+          {
+            "term": "KTTH",
+            "full_name": "Kế toán tổng hợp - Thuế",
+            "definition": "Vị trí kế toán ghi nhận nghiệp vụ hàng ngày",
+            "see_also": ["page_3_2_1"]
+          },
+          {
+            "term": "KTT",
+            "full_name": "Kế toán trưởng",
+            "definition": "Kiểm soát tổng thể, báo cáo tài chính",
+            "see_also": ["page_3_2_1"]
+          }
+        ]
+      },
+      {
+        "id": "glossary_l_o",
+        "name": "L–O",
+        "terms": [
+          {
+            "term": "Ladospice",
+            "full_name": null,
+            "definition": "Pháp nhân sản xuất của Thích Cay",
+            "see_also": ["page_1_1_3"]
+          },
+          {
+            "term": "Lagging KR",
+            "full_name": null,
+            "definition": "KR đo kết quả cuối — không thay đổi được. Ví dụ: 12/12 tháng chi lương đúng ngày 05",
+            "see_also": ["subpage_3_3_1_1"]
+          },
+          {
+            "term": "Leading KR",
+            "full_name": null,
+            "definition": "KR đo hành vi trung gian — có thể tác động. Ví dụ: Phiếu bàn giao ký đúng hạn ngày 01",
+            "see_also": ["subpage_3_3_1_1"]
+          },
+          {
+            "term": "O3K",
+            "full_name": "Objective + 3 Key Results",
+            "definition": "Framework quản lý mục tiêu của Thích Cay",
+            "see_also": ["page_3_3_1"]
+          },
+          {
+            "term": "Objective",
+            "full_name": null,
+            "definition": "Mục tiêu định hướng — định tính, truyền cảm hứng",
+            "see_also": ["subpage_3_3_1_1"]
+          }
+        ]
+      },
+      {
+        "id": "glossary_p_z",
+        "name": "P–Z",
+        "terms": [
+          {
+            "term": "P&L",
+            "full_name": "Profit & Loss",
+            "definition": "Báo cáo lãi lỗ hàng tháng",
+            "see_also": []
+          },
+          {
+            "term": "Phiếu bàn giao",
+            "full_name": null,
+            "definition": "Văn bản HCNS giao data lương cho KTT",
+            "see_also": ["subpage_3_2_2_2"]
+          },
+          {
+            "term": "ROAS",
+            "full_name": "Return on Ad Spend",
+            "definition": "Doanh thu / Chi phí quảng cáo",
+            "see_also": []
+          },
+          {
+            "term": "SKU",
+            "full_name": "Stock Keeping Unit",
+            "definition": "Mã sản phẩm",
+            "see_also": []
+          },
+          {
+            "term": "SOP",
+            "full_name": "Standard Operating Procedure",
+            "definition": "Quy trình vận hành chuẩn",
+            "see_also": []
+          },
+          {
+            "term": "Setup KR",
+            "full_name": null,
+            "definition": "KR xây dựng nền tảng — làm 1 lần. Ví dụ: Hoàn thành 5 SOP kế toán",
+            "see_also": ["subpage_3_3_1_1"]
+          },
+          {
+            "term": "TNCN",
+            "full_name": "Thuế thu nhập cá nhân",
+            "definition": "Kế toán chịu toàn bộ — HCNS chỉ cung cấp MST",
+            "see_also": []
+          },
+          {
+            "term": "Turnover Rate",
+            "full_name": null,
+            "definition": "Tỷ lệ nghỉ việc trong năm. Công thức: Số người nghỉ/Headcount TB × 100",
+            "see_also": ["subpage_3_3_2_4"]
+          },
+          {
+            "term": "Time to Fill",
+            "full_name": null,
+            "definition": "Số ngày từ đăng JD đến nhân viên nhận việc",
+            "see_also": ["subpage_3_3_2_3"]
+          },
+          {
+            "term": "VAT",
+            "full_name": "Value Added Tax",
+            "definition": "Thuế giá trị gia tăng — Thích Cay đang áp 10%",
+            "see_also": []
+          }
+        ]
+      }
+    ],
+    "total_terms": 30
+  },
+
+  "link_types": [
+    {
+      "type": "link_ngang",
+      "name": "Link Ngang",
+      "description": "Page ↔ Page cùng cấp, có liên quan trực tiếp",
+      "direction": "horizontal",
+      "example": "Quy trình lương → Phiếu bàn giao"
+    },
+    {
+      "type": "link_xuong",
+      "name": "Link Xuống",
+      "description": "Wiki → Lark Base (dữ liệu real-time)",
+      "direction": "vertical_down",
+      "example": "Tổng quan O3K → Dashboard O3K tracking"
+    },
+    {
+      "type": "link_glossary",
+      "name": "Link Thuật ngữ",
+      "description": "Bất kỳ Page → Glossary (giải thích inline)",
+      "direction": "cross_reference",
+      "example": "Chỉ số eNPS → Thuật ngữ E-K"
+    }
+  ],
+
+  "page_metadata_standard": {
+    "required_fields": [
+      "page_id",
+      "page_name",
+      "page_type",
+      "main_content",
+      "related_docs",
+      "lark_base_links",
+      "version_history"
+    ],
+    "structure": {
+      "title": "string",
+      "main_content": {
+        "explanation": "text",
+        "sop_steps": "array (if applicable)",
+        "examples": "array (if applicable)",
+        "screenshots": "array (if applicable)"
+      },
+      "related_docs": {
+        "link_ngang": "array of page_ids",
+        "link_xuong": "array of lark_base_ids",
+        "link_glossary": "array of term_ids"
+      },
+      "version_history": {
+        "last_updated": "date",
+        "updated_by": "user_id",
+        "changes": "string"
+      }
+    }
+  },
+
+  "lark_base_connections": [
+    {
+      "base_id": "base_o3k_tracking",
+      "name": "O3K Tracking Real-time",
+      "description": "Tiến độ tất cả O-KR theo tháng",
+      "linked_pages": [
+        "page_3_3_1",
+        "page_3_3_2",
+        "page_3_3_3"
+      ]
+    },
+    {
+      "base_id": "base_kpi_thang",
+      "name": "KPI Tháng Dashboard",
+      "description": "Điểm KPI thực tế từng người",
+      "linked_pages": [
+        "page_3_3_4"
+      ]
+    },
+    {
+      "base_id": "base_luong",
+      "name": "Lương & Phiếu bàn giao",
+      "description": "Tracking quy trình lương 18 bước",
+      "linked_pages": [
+        "page_3_2_2"
+      ]
+    },
+    {
+      "base_id": "base_content_calendar",
+      "name": "Lịch Content Marketing",
+      "description": "Kế hoạch content từng tuần",
+      "linked_pages": [
+        "page_2_5_2"
+      ]
+    }
+  ],
+
+  "statistics": {
+    "total_spaces": 4,
+    "total_sections": 19,
+    "total_pages_estimated": 95,
+    "total_glossary_terms": 30,
+    "access_levels": [
+      "public",
+      "operational_team",
+      "internal_hcns_accounting",
+      "leadership_only"
+    ]
+  },
+
+  "ai_agent_instructions": {
+    "navigation": "Traverse từ Space → Section → Page → Sub-page. Sử dụng page_id để link chính xác.",
+    "context_filtering": "Filter theo access_level dựa trên user role. Color_code giúp xác định context nhanh.",
+    "term_resolution": "Khi gặp glossary_term trong page, auto-link sang glossary category tương ứng.",
+    "lark_base_integration": "Khi page có lark_base_link: true, query sang base_id tương ứng để lấy real-time data.",
+    "link_traversal": {
+      "link_ngang": "Follow related_docs trong cùng space hoặc cross-space",
+      "link_xuong": "Query Lark Base API với base_id",
+      "link_glossary": "Inline expand definition từ glossary.categories"
+    }
+  }
+}

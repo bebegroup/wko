@@ -70,6 +70,17 @@ def sample_config() -> dict[str, Any]:
             "reviewer_bot_name": "@wiki-reviewer",
         },
         "lark_bases": [],
+        "master_index_fields": {
+            "required": [
+                "Page Code", "Page Name", "Space", "Section", "Type",
+                "Hub Parent", "Owner", "Reviewer", "Status", "Version",
+                "Security Level", "Link",
+            ],
+            "recommended": [
+                "Source Type", "Source URL", "Effective Date",
+                "Review Cadence", "Impacted Pages",
+            ],
+        },
         "policies": {
             "page_status_values": ["⬜ Draft", "🔄 Active", "📋 Deprecated", "✅ Archived"],
             "default_status": "⬜ Draft",

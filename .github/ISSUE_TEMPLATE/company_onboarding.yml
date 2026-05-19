@@ -1,0 +1,59 @@
+name: 🏢 Company Onboarding Help
+description: Cần help adopt wko cho công ty của bạn?
+labels: ["onboarding", "question"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cảm ơn bạn quan tâm wko!
+
+        Trước khi mở issue, kiểm tra:
+        - [ ] Đã đọc [docs-meta/ONBOARDING.md](https://github.com/saucevn/wko/blob/main/docs-meta/ONBOARDING.md)
+        - [ ] Đã xem [examples/](https://github.com/saucevn/wko/tree/main/examples) cho 3 shape khác nhau
+        - [ ] Đã thử `python3 scripts/init_company.py`
+
+  - type: input
+    id: company-context
+    attributes:
+      label: Company context
+      description: Ngành / quy mô / kênh chính (KHÔNG cần tên thật)
+      placeholder: F&B Việt, 1000 đơn/ngày, TikTok+Shopee
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Câu hỏi cụ thể
+      description: Vướng ở bước nào? Đang cố làm gì?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: stuck-step
+    attributes:
+      label: Stuck ở bước onboarding nào?
+      options:
+        - Bước 1 — Fork + clone
+        - Bước 2 — Cài lark-cli & Python
+        - Bước 3 — lark-cli auth login
+        - Bước 4 — Tạo Lark Wiki Space
+        - Bước 5 — Tạo Lark Custom App
+        - Bước 6 — Cấu hình company.config.yaml
+        - Bước 7 — Render + tạo Master Index
+        - Bước 8 — GitHub CI setup
+        - Sau onboarding (vận hành thực tế)
+        - Khác
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: Đã thử gì
+      description: Các approach đã thử + kết quả
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error message (nếu có)
+      render: shell

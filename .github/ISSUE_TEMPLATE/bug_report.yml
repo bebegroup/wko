@@ -1,0 +1,81 @@
+name: 🐛 Bug Report
+description: Báo lỗi trong saucevn/wko
+labels: ["bug", "triage"]
+assignees: ["saucevn"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cảm ơn bạn report bug. Trước khi submit, kiểm tra:
+        - [ ] Đã search existing issues
+        - [ ] Đang dùng version mới nhất (xem `git log` hoặc tag)
+        - [ ] `lark-cli --version` ≥ 1.0.30
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Mô tả bug
+      description: Bug làm gì sai? Expected vs actual.
+      placeholder: |
+        Expected: render.py output dist/ với placeholder đã substitute
+        Actual: render.py crash với UndefinedError 'company.foo'
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Các bước reproduce
+      description: Bước-bước để reproduce bug
+      placeholder: |
+        1. `cp company.config.yaml.example company.config.yaml`
+        2. Xóa field `company.industry`
+        3. `python3 scripts/render.py`
+        4. → crash
+    validations:
+      required: true
+
+  - type: input
+    id: wko-version
+    attributes:
+      label: wko version
+      description: Tag hoặc commit hash (`git describe --tags` hoặc `git rev-parse HEAD`)
+      placeholder: v0.5.0-beta hoặc commit hash
+    validations:
+      required: true
+
+  - type: input
+    id: lark-cli-version
+    attributes:
+      label: lark-cli version
+      placeholder: 1.0.30
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux (Ubuntu)
+        - Linux (other)
+        - WSL
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Error output
+      description: Paste error message, stack trace
+      render: shell
+
+  - type: textarea
+    id: config-snippet
+    attributes:
+      label: Relevant config snippet
+      description: Phần của `company.config.yaml` liên quan (REMOVE TOKENS!)
+      render: yaml

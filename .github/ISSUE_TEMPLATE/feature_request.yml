@@ -1,0 +1,64 @@
+name: 💡 Feature Request
+description: Đề xuất feature mới cho saucevn/wko template
+labels: ["enhancement", "triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cảm ơn bạn! Lưu ý: wko là **template generic**, không chứa nội dung công ty.
+        Feature phải áp dụng được cho nhiều công ty.
+
+        Đối với breaking change (đổi config schema, placeholder syntax), mở
+        [GitHub Discussion với title `RFC: ...`](https://github.com/saucevn/wko/discussions)
+        trước thay vì issue.
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Tại sao cần feature này? Pain point hiện tại?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Mô tả feature đề xuất + cách dùng
+      placeholder: |
+        Vd: Thêm placeholder `{{ company.fiscal_year_start }}` cho phần tài chính.
+        Config schema thêm field `company.fiscal_year_start: "2026-01-01"`.
+        skills/05-publish-workflow.md dùng được trong section "Yearly cadence".
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Bạn đã cân nhắc cách nào khác không?
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      multiple: true
+      options:
+        - skills/ (writing rules)
+        - docs/ (company docs)
+        - scripts/ (tooling)
+        - .github/ (CI)
+        - taxonomy (V4.x schema)
+        - examples/ (new shape)
+        - documentation only
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: breaking
+    attributes:
+      label: Breaking change?
+      options:
+        - label: Có breaking change (cần RFC discussion trước)
+        - label: Backward compatible

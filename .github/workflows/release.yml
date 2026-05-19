@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r scripts/requirements.txt
+
+      - name: Extract version from tag
+        id: ver
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          # alpha/beta/rc → prerelease
+          if [[ "$VERSION" =~ -(alpha|beta|rc) ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate release notes from CHANGELOG
+        id: notes
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          # Extract section between [VERSION] và next [
+          if [ -f CHANGELOG.md ]; then
+            awk -v v="$VERSION" '
+              /^## \[/ && found { exit }
+              found { print }
+              $0 ~ "^## \\["v"\\]" { found = 1 }
+            ' CHANGELOG.md > /tmp/release-notes.md
+          fi
+          if [ ! -s /tmp/release-notes.md ]; then
+            echo "Release $VERSION" > /tmp/release-notes.md
+            echo "" >> /tmp/release-notes.md
+            echo "See [CHANGELOG.md](CHANGELOG.md) for details." >> /tmp/release-notes.md
+          fi
+          echo "Release notes:"
+          cat /tmp/release-notes.md
+
+      - name: Test render với example
+        run: |
+          cp company.config.yaml.example company.config.yaml
+          python3 scripts/validate_config.py --strict
+          python3 scripts/render.py
+          tar -czf dist-rendered.tar.gz dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.ver.outputs.version }}
+          body_path: /tmp/release-notes.md
+          prerelease: ${{ steps.ver.outputs.prerelease == 'true' }}
+          generate_release_notes: true
+          files: |
+            dist-rendered.tar.gz
+            LICENSE
+            company.config.yaml.example

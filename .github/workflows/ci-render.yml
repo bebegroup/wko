@@ -1,0 +1,33 @@
+name: Render Check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r scripts/requirements.txt
+      - name: Render với example config
+        run: |
+          cp company.config.yaml.example company.config.yaml
+          python3 scripts/render.py --check
+      - name: Render full → dist/
+        run: |
+          python3 scripts/render.py
+          echo "Rendered files:"
+          find dist -type f -name '*.md' | head -20
+      - name: Upload rendered dist as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-rendered-${{ github.sha }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error

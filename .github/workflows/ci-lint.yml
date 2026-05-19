@@ -1,0 +1,32 @@
+name: Lint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Markdown lint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: 'skills/**/*.md docs/**/*.md docs-meta/**/*.md README.md CONTRIBUTING.md SECURITY.md ROADMAP.md'
+          continue-on-error: false
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install lint tools
+        run: pip install ruff black
+      - name: Ruff
+        run: ruff check scripts/ tests/
+      - name: Black --check
+        run: black --check scripts/ tests/

@@ -46,7 +46,20 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "C90", "UP", "S"]
-ignore = ["S603", "S607"]  # subprocess calls intentional
+ignore = [
+  "S603",  # subprocess call — intentional (lark-cli invocation)
+  "S607",  # subprocess partial-path — intentional (lark-cli on PATH)
+  "S108",  # /tmp/ paths in scripts — intentional, controlled writes
+  "S701",  # jinja2 autoescape=False — intentional (markdown output, not HTML)
+  "S105",  # hardcoded password strings — false positive trong test fixtures
+  "C901",  # complex-structure — accepted in audit/render orchestration funcs
+  "E501",  # line-too-long — relaxed cho strings + comments (vẫn có line-length=100)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert là chuẩn pytest, không phải prod code
+"scripts/init_company.py" = ["S105"]  # placeholder fixtures
+"scripts/build_backlink_graph.py" = ["B007"]  # used in comprehension semantics
 
 [tool.black]
 line-length = 100

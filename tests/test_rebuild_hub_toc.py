@@ -1,4 +1,5 @@
 """Tests for rebuild_hub_toc.py."""
+
 from __future__ import annotations
 
 from typing import Any

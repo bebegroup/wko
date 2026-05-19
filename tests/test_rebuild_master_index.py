@@ -1,4 +1,5 @@
 """Tests for rebuild_master_index.py — table rendering logic."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -40,14 +41,34 @@ def test_render_index_includes_v41_required_fields(sample_config: dict[str, Any]
 
 def test_render_index_groups_by_space(sample_config: dict[str, Any]) -> None:
     pages = [
-        {"page_code": "OPS-CS-SOP-001", "space": "OPS", "section": "OPS-CS",
-         "type": "SOP", "page_name": "x", "hub_parent": "OPS-CS-HUB-001",
-         "owner": "Ops", "reviewer": "Ops", "status": "Active", "version": "v1.0",
-         "security_level": "Internal", "link": ""},
-        {"page_code": "SYS-00-IDX-001", "space": "SYS", "section": "SYS-00",
-         "type": "IDX", "page_name": "Master Index", "hub_parent": "",
-         "owner": "Admin", "reviewer": "Admin", "status": "Active", "version": "v1.0",
-         "security_level": "Internal", "link": ""},
+        {
+            "page_code": "OPS-CS-SOP-001",
+            "space": "OPS",
+            "section": "OPS-CS",
+            "type": "SOP",
+            "page_name": "x",
+            "hub_parent": "OPS-CS-HUB-001",
+            "owner": "Ops",
+            "reviewer": "Ops",
+            "status": "Active",
+            "version": "v1.0",
+            "security_level": "Internal",
+            "link": "",
+        },
+        {
+            "page_code": "SYS-00-IDX-001",
+            "space": "SYS",
+            "section": "SYS-00",
+            "type": "IDX",
+            "page_name": "Master Index",
+            "hub_parent": "",
+            "owner": "Admin",
+            "reviewer": "Admin",
+            "status": "Active",
+            "version": "v1.0",
+            "security_level": "Internal",
+            "link": "",
+        },
     ]
     md = render_index_markdown(pages, sample_config)
     # SYS section should appear before OPS section (by order field in spaces)

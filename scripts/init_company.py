@@ -6,6 +6,7 @@ Usage:
 Tạo company.config.yaml ban đầu với V4.1 defaults (7 SPACE, 13 TYPE).
 Sau khi chạy, user vẫn cần bổ sung sections, org.departments, master_registry.
 """
+
 from __future__ import annotations
 
 import sys
@@ -13,47 +14,122 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-
 from _common import require_lark_cli
 
-
 DEFAULT_SPACES_V41: list[dict[str, Any]] = [
-    {"code": "SYS", "name": "Wiki Operating System", "order": "00", "icon": "⚙️", "owner": "IT",
-     "purpose": "Hệ thống Wiki: hướng dẫn dùng, Index gốc, change log"},
-    {"code": "GEN", "name": "Chung / General", "order": "01", "icon": "🏢", "owner": "HCNS + Admin",
-     "purpose": "Nền tảng công ty, onboarding, công cụ, thuật ngữ"},
-    {"code": "INT", "name": "Nội bộ / Internal", "order": "02", "icon": "🤝", "owner": "HCNS / Kế toán / Xfn",
-     "purpose": "HR, Finance, O3K, Phối hợp liên phòng"},
-    {"code": "OPS", "name": "Vận hành / Operations", "order": "03", "icon": "⚡", "owner": "Operations Lead",
-     "purpose": "CS, Kho, Sàn, Hoá đơn, PIM, MFG, MKT, Livestream"},
-    {"code": "BOD", "name": "Ban giám đốc / Board", "order": "04", "icon": "👔", "owner": "CEO + BOD",
-     "purpose": "Chiến lược, FIN, HR cấp cao, Governance"},
-    {"code": "TMP", "name": "Templates", "order": "05", "icon": "📋", "owner": "Admin",
-     "purpose": "Mẫu chung (meeting, decision log, RACI, …)"},
-    {"code": "ARC", "name": "Archive", "order": "99", "icon": "🗄", "owner": "Admin", "append_only": True,
-     "purpose": "Lưu trữ append-only — không tái dùng mã"},
+    {
+        "code": "SYS",
+        "name": "Wiki Operating System",
+        "order": "00",
+        "icon": "⚙️",
+        "owner": "IT",
+        "purpose": "Hệ thống Wiki: hướng dẫn dùng, Index gốc, change log",
+    },
+    {
+        "code": "GEN",
+        "name": "Chung / General",
+        "order": "01",
+        "icon": "🏢",
+        "owner": "HCNS + Admin",
+        "purpose": "Nền tảng công ty, onboarding, công cụ, thuật ngữ",
+    },
+    {
+        "code": "INT",
+        "name": "Nội bộ / Internal",
+        "order": "02",
+        "icon": "🤝",
+        "owner": "HCNS / Kế toán / Xfn",
+        "purpose": "HR, Finance, O3K, Phối hợp liên phòng",
+    },
+    {
+        "code": "OPS",
+        "name": "Vận hành / Operations",
+        "order": "03",
+        "icon": "⚡",
+        "owner": "Operations Lead",
+        "purpose": "CS, Kho, Sàn, Hoá đơn, PIM, MFG, MKT, Livestream",
+    },
+    {
+        "code": "BOD",
+        "name": "Ban giám đốc / Board",
+        "order": "04",
+        "icon": "👔",
+        "owner": "CEO + BOD",
+        "purpose": "Chiến lược, FIN, HR cấp cao, Governance",
+    },
+    {
+        "code": "TMP",
+        "name": "Templates",
+        "order": "05",
+        "icon": "📋",
+        "owner": "Admin",
+        "purpose": "Mẫu chung (meeting, decision log, RACI, …)",
+    },
+    {
+        "code": "ARC",
+        "name": "Archive",
+        "order": "99",
+        "icon": "🗄",
+        "owner": "Admin",
+        "append_only": True,
+        "purpose": "Lưu trữ append-only — không tái dùng mã",
+    },
 ]
 
 DEFAULT_TYPES_V41: list[dict[str, Any]] = [
-    {"code": "HUB", "name": "Hub / Mục lục", "question": "Tôi đang ở đâu trong luồng?",
-     "mandatory_per_section": True},
-    {"code": "MST", "name": "Master (luật/dữ liệu gốc)", "question": "Luật gốc / dữ liệu gốc là gì?",
-     "sub_types": ["bridge", "standalone"]},
-    {"code": "PROC", "name": "Process (luồng đa vai trò)", "question": "Ai làm, làm khi nào?",
-     "new_in_v41": True},
-    {"code": "SOP", "name": "Standard Operating Procedure", "question": "Tôi phải làm từng bước gì?"},
+    {
+        "code": "HUB",
+        "name": "Hub / Mục lục",
+        "question": "Tôi đang ở đâu trong luồng?",
+        "mandatory_per_section": True,
+    },
+    {
+        "code": "MST",
+        "name": "Master (luật/dữ liệu gốc)",
+        "question": "Luật gốc / dữ liệu gốc là gì?",
+        "sub_types": ["bridge", "standalone"],
+    },
+    {
+        "code": "PROC",
+        "name": "Process (luồng đa vai trò)",
+        "question": "Ai làm, làm khi nào?",
+        "new_in_v41": True,
+    },
+    {
+        "code": "SOP",
+        "name": "Standard Operating Procedure",
+        "question": "Tôi phải làm từng bước gì?",
+    },
     {"code": "CHK", "name": "Checklist", "question": "Tôi đã làm đủ chưa?"},
     {"code": "TMP", "name": "Template", "question": "Tôi dùng mẫu nào?"},
-    {"code": "PBK", "name": "Playbook (lệch / lỗi / nhánh)", "question": "Lệch / lỗi / có nhánh thì sao?"},
-    {"code": "DBD", "name": "Dashboard", "question": "Kết quả có ổn không?",
-     "requires_real_data": True},
-    {"code": "POL", "name": "Policy (luật ngoài)", "scope": "external_only",
-     "mandatory_sections": 8},
-    {"code": "DIC", "name": "Dictionary (thuật ngữ)",
-     "condition": "chỉ tạo khi thuật ngữ gây sai thao tác"},
-    {"code": "GDL", "name": "Guideline (luật mềm)",
-     "condition": "chỉ tạo khi ảnh hưởng hành vi thực thi",
-     "new_in_v41": True},
+    {
+        "code": "PBK",
+        "name": "Playbook (lệch / lỗi / nhánh)",
+        "question": "Lệch / lỗi / có nhánh thì sao?",
+    },
+    {
+        "code": "DBD",
+        "name": "Dashboard",
+        "question": "Kết quả có ổn không?",
+        "requires_real_data": True,
+    },
+    {
+        "code": "POL",
+        "name": "Policy (luật ngoài)",
+        "scope": "external_only",
+        "mandatory_sections": 8,
+    },
+    {
+        "code": "DIC",
+        "name": "Dictionary (thuật ngữ)",
+        "condition": "chỉ tạo khi thuật ngữ gây sai thao tác",
+    },
+    {
+        "code": "GDL",
+        "name": "Guideline (luật mềm)",
+        "condition": "chỉ tạo khi ảnh hưởng hành vi thực thi",
+        "new_in_v41": True,
+    },
     {"code": "LOG", "name": "Log (nhật ký / lịch sử quyết định)"},
     {"code": "IDX", "name": "Index"},
 ]
@@ -169,13 +245,25 @@ def build_config_from_answers(a: dict[str, Any]) -> dict[str, Any]:
         "lark_bases": [],
         "master_index_fields": {
             "required": [
-                "Page Code", "Page Name", "Space", "Section", "Type",
-                "Hub Parent", "Owner", "Reviewer", "Status", "Version",
-                "Security Level", "Link",
+                "Page Code",
+                "Page Name",
+                "Space",
+                "Section",
+                "Type",
+                "Hub Parent",
+                "Owner",
+                "Reviewer",
+                "Status",
+                "Version",
+                "Security Level",
+                "Link",
             ],
             "recommended": [
-                "Source Type", "Source URL", "Effective Date",
-                "Review Cadence", "Impacted Pages",
+                "Source Type",
+                "Source URL",
+                "Effective Date",
+                "Review Cadence",
+                "Impacted Pages",
             ],
         },
         "policies": {

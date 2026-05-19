@@ -7,6 +7,7 @@ Usage:
     python3 scripts/wiki_navigator.py --output tree.json
     python3 scripts/wiki_navigator.py --max-depth 3
 """
+
 from __future__ import annotations
 
 import argparse
@@ -23,9 +24,11 @@ def fetch_node(node_token: str) -> dict[str, Any] | None:
     """Get single node metadata via lark-cli."""
     try:
         r = subprocess.run(
-            ["lark-cli", "wiki", "node", "get",
-             "--node-token", node_token, "--output", "json"],
-            capture_output=True, text=True, check=True, timeout=15,
+            ["lark-cli", "wiki", "node", "get", "--node-token", node_token, "--output", "json"],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=15,
         )
         return json.loads(r.stdout)
     except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
@@ -37,9 +40,20 @@ def list_children(parent_token: str) -> list[dict[str, Any]]:
     """List immediate children of a node."""
     try:
         r = subprocess.run(
-            ["lark-cli", "wiki", "node", "list",
-             "--parent-node-token", parent_token, "--output", "json"],
-            capture_output=True, text=True, check=True, timeout=30,
+            [
+                "lark-cli",
+                "wiki",
+                "node",
+                "list",
+                "--parent-node-token",
+                parent_token,
+                "--output",
+                "json",
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=30,
         )
         return json.loads(r.stdout)
     except (subprocess.CalledProcessError, json.JSONDecodeError):

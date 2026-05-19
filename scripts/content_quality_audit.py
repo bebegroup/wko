@@ -15,16 +15,17 @@ Usage:
     python3 scripts/content_quality_audit.py --rule pol-internal   # specific rule
     python3 scripts/content_quality_audit.py --severity high       # filter
 """
+
 from __future__ import annotations
 
 import argparse
 import re
 import sys
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from _common import load_config, require_lark_cli
-
 
 Severity = str  # "high" | "medium" | "low"
 
@@ -38,13 +39,15 @@ def audit_pol_internal_keywords(pages: list[dict[str, Any]]) -> list[dict[str, A
         if "-POL-" in code:
             name = p.get("page_name", "")
             if internal_kw.search(name):
-                issues.append({
-                    "rule": "pol-internal-keywords",
-                    "severity": "high",
-                    "page": code,
-                    "page_name": name,
-                    "msg": f"POL '{name}' có keyword nội bộ — kiểm tra có nên là MST không (POL = external only)",
-                })
+                issues.append(
+                    {
+                        "rule": "pol-internal-keywords",
+                        "severity": "high",
+                        "page": code,
+                        "page_name": name,
+                        "msg": f"POL '{name}' có keyword nội bộ — kiểm tra có nên là MST không (POL = external only)",
+                    }
+                )
     return issues
 
 
@@ -63,9 +66,7 @@ def audit_section_missing_proc(
 
     # Configured sections
     configured = {
-        sec["code"]
-        for sections in cfg["taxonomy"]["sections"].values()
-        for sec in sections
+        sec["code"] for sections in cfg["taxonomy"]["sections"].values() for sec in sections
     }
 
     for section, types in section_types.items():
@@ -73,13 +74,15 @@ def audit_section_missing_proc(
             continue
         sop_count = sum(1 for p in pages if p.get("page_code", "").startswith(f"{section}-SOP-"))
         if sop_count >= 3 and "PROC" not in types:
-            issues.append({
-                "rule": "section-missing-proc",
-                "severity": "medium",
-                "page": section,
-                "page_name": "(section)",
-                "msg": f"Section `{section}` có {sop_count} SOP nhưng không có PROC. V4.1 execution-first khuyến nghị tạo PROC mô tả luồng.",
-            })
+            issues.append(
+                {
+                    "rule": "section-missing-proc",
+                    "severity": "medium",
+                    "page": section,
+                    "page_name": "(section)",
+                    "msg": f"Section `{section}` có {sop_count} SOP nhưng không có PROC. V4.1 execution-first khuyến nghị tạo PROC mô tả luồng.",
+                }
+            )
     return issues
 
 
@@ -99,13 +102,15 @@ def audit_missing_hub_parent(
         if type_code in ("HUB", "IDX"):
             continue
         if not p.get("hub_parent"):
-            issues.append({
-                "rule": "missing-hub-parent",
-                "severity": "high",
-                "page": code,
-                "page_name": p.get("page_name", ""),
-                "msg": "Hub Parent rỗng (V4.1 bắt buộc)",
-            })
+            issues.append(
+                {
+                    "rule": "missing-hub-parent",
+                    "severity": "high",
+                    "page": code,
+                    "page_name": p.get("page_name", ""),
+                    "msg": "Hub Parent rỗng (V4.1 bắt buộc)",
+                }
+            )
     return issues
 
 
@@ -131,20 +136,20 @@ def audit_pol_owner_mismatch(
                 if len(keyword) > 3 and keyword.lower() in name.lower():
                     actual_section = code.rsplit("-POL-", 1)[0]
                     if actual_section != expected_section:
-                        issues.append({
-                            "rule": "pol-owner-mismatch",
-                            "severity": "medium",
-                            "page": code,
-                            "page_name": name,
-                            "msg": f"POL '{name}' đặt ở `{actual_section}` nhưng pol_mst_rules.primary_owner_table chỉ định `{expected_section}`",
-                        })
+                        issues.append(
+                            {
+                                "rule": "pol-owner-mismatch",
+                                "severity": "medium",
+                                "page": code,
+                                "page_name": name,
+                                "msg": f"POL '{name}' đặt ở `{actual_section}` nhưng pol_mst_rules.primary_owner_table chỉ định `{expected_section}`",
+                            }
+                        )
                     break
     return issues
 
 
-def audit_invalid_status(
-    pages: list[dict[str, Any]], cfg: dict[str, Any]
-) -> list[dict[str, Any]]:
+def audit_invalid_status(pages: list[dict[str, Any]], cfg: dict[str, Any]) -> list[dict[str, Any]]:
     """Status phải trong policies.page_status_values."""
     valid = set(cfg["policies"]["page_status_values"])
     # Also accept without emoji (e.g., "Active" matches "🔄 Active")
@@ -153,13 +158,15 @@ def audit_invalid_status(
     for p in pages:
         status = p.get("status", "")
         if status and status not in valid and status not in valid_text:
-            issues.append({
-                "rule": "invalid-status",
-                "severity": "high",
-                "page": p.get("page_code"),
-                "page_name": p.get("page_name", ""),
-                "msg": f"Status '{status}' không trong {sorted(valid)}",
-            })
+            issues.append(
+                {
+                    "rule": "invalid-status",
+                    "severity": "high",
+                    "page": p.get("page_code"),
+                    "page_name": p.get("page_name", ""),
+                    "msg": f"Status '{status}' không trong {sorted(valid)}",
+                }
+            )
     return issues
 
 

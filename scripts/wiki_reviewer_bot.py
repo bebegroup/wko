@@ -20,6 +20,7 @@ Run:
     cp .env.example .env  # điền LARK_APP_ID/SECRET + ANTHROPIC_API_KEY
     python3 scripts/wiki_reviewer_bot.py
 """
+
 from __future__ import annotations
 
 import json
@@ -29,14 +30,11 @@ import re
 import subprocess
 import sys
 import time
-from pathlib import Path
 from typing import Any
 
+from _common import load_config, require_lark_auth, require_lark_cli
 from anthropic import Anthropic
 from dotenv import load_dotenv
-
-from _common import load_config, require_lark_auth, require_lark_cli
-
 
 logging.basicConfig(
     level=logging.INFO,
@@ -68,7 +66,10 @@ def resolve_wiki_url(url: str) -> dict[str, str] | None:
     try:
         r = subprocess.run(
             ["lark-cli", "wiki", "node", "get", "--url", url, "--output", "json"],
-            capture_output=True, text=True, check=True, timeout=15,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=15,
         )
         return json.loads(r.stdout)
     except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
@@ -81,7 +82,10 @@ def fetch_doc_content(obj_token: str) -> str | None:
     try:
         r = subprocess.run(
             ["lark-cli", "docs", "fetch", obj_token, "--api-version", "v2"],
-            capture_output=True, text=True, check=True, timeout=30,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=30,
         )
         return r.stdout
     except subprocess.CalledProcessError as e:
@@ -103,7 +107,7 @@ def review_with_claude(
         f"- Writing style: số liệu cụ thể, không từ mơ hồ\n"
         f"- V{cfg['taxonomy']['version'].replace('v', '')} execution-first: page phải trả lời ≥ 1 câu hỏi thực thi\n"
         f"- Linking: 4 loại link đầy đủ + Hub Parent\n"
-        f"\nReturn JSON: {{\"score\": float 0-10, \"comment\": str, \"highlights\": list}}"
+        f'\nReturn JSON: {{"score": float 0-10, "comment": str, "highlights": list}}'
     )
 
     user_prompt = f"Review trang sau:\n\nURL: {page_url}\n\nContent:\n{page_content[:3000]}"
@@ -130,9 +134,18 @@ def post_comment(obj_token: str, comment: str) -> bool:
     """Post comment via lark-cli drive comment."""
     try:
         subprocess.run(
-            ["lark-cli", "drive", "comment", "create",
-             "--file-token", obj_token, "--content", comment],
-            check=True, timeout=15,
+            [
+                "lark-cli",
+                "drive",
+                "comment",
+                "create",
+                "--file-token",
+                obj_token,
+                "--content",
+                comment,
+            ],
+            check=True,
+            timeout=15,
         )
         return True
     except subprocess.CalledProcessError as e:
@@ -144,10 +157,20 @@ def notify_group(chat_id: str, text: str) -> bool:
     """Send message to Lark chat via lark-cli."""
     try:
         subprocess.run(
-            ["lark-cli", "im", "message", "send",
-             "--receive-id", chat_id, "--msg-type", "text",
-             "--content", json.dumps({"text": text}, ensure_ascii=False)],
-            check=True, timeout=15,
+            [
+                "lark-cli",
+                "im",
+                "message",
+                "send",
+                "--receive-id",
+                chat_id,
+                "--msg-type",
+                "text",
+                "--content",
+                json.dumps({"text": text}, ensure_ascii=False),
+            ],
+            check=True,
+            timeout=15,
         )
         return True
     except subprocess.CalledProcessError as e:
@@ -218,7 +241,9 @@ def main() -> int:
     client = Anthropic(api_key=api_key)
     chat_id = cfg["integrations"].get("contributor_group_chat_id", "")
     if not chat_id:
-        log.warning("⚠️  integrations.contributor_group_chat_id not set — bot will process all chats")
+        log.warning(
+            "⚠️  integrations.contributor_group_chat_id not set — bot will process all chats"
+        )
 
     log.info("🤖 Wiki Reviewer Bot starting (lark-cli event consume mode)...")
 
@@ -232,7 +257,7 @@ def main() -> int:
 
     recent_urls: dict[str, float] = {}
     try:
-        for line in proc.stdout:                  # NDJSON, 1 line = 1 event
+        for line in proc.stdout:  # NDJSON, 1 line = 1 event
             line = line.strip()
             if not line:
                 continue

@@ -3,6 +3,7 @@
 Every script that interacts with Lark MUST call ``require_lark_cli()`` and
 ``require_lark_auth()`` at the top of ``main()`` for fail-fast behavior.
 """
+
 from __future__ import annotations
 
 import shutil

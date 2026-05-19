@@ -1,4 +1,5 @@
 """Tests for migrate_v4_to_v41.py."""
+
 from __future__ import annotations
 
 from migrate_v4_to_v41 import (

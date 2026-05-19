@@ -1,9 +1,8 @@
 """Tests for wiki_reviewer_bot.py — pure functions."""
+
 from __future__ import annotations
 
 from wiki_reviewer_bot import (
-    APPROVAL_KEYWORDS,
-    WIKI_URL_RE,
     extract_wiki_url,
     is_approval,
 )

@@ -10,6 +10,7 @@ Usage:
 
 Cần `lark-cli auth login` trước (scope: wiki:node:read + docx:document:readonly).
 """
+
 from __future__ import annotations
 
 import argparse
@@ -38,7 +39,10 @@ def fetch_content(obj_token: str) -> str | None:
     try:
         r = subprocess.run(
             ["lark-cli", "docs", "fetch", obj_token, "--api-version", "v2", "--format", "xml"],
-            capture_output=True, text=True, check=True, timeout=30,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=30,
         )
         return r.stdout
     except subprocess.CalledProcessError as e:
@@ -54,9 +58,20 @@ def list_descendants(root_token: str) -> list[dict[str, Any]]:
         token = queue.pop(0)
         try:
             r = subprocess.run(
-                ["lark-cli", "wiki", "node", "list",
-                 "--parent-node-token", token, "--output", "json"],
-                capture_output=True, text=True, check=True, timeout=30,
+                [
+                    "lark-cli",
+                    "wiki",
+                    "node",
+                    "list",
+                    "--parent-node-token",
+                    token,
+                    "--output",
+                    "json",
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=30,
             )
             children = json.loads(r.stdout)
             for c in children:
@@ -118,7 +133,9 @@ def main() -> int:
     parser.add_argument("--all", action="store_true", help="Full snapshot")
     parser.add_argument("--tree-only", action="store_true", help="Chỉ tree, không fetch content")
     parser.add_argument("--node-token", help="Pull 1 node thay vì root")
-    parser.add_argument("--output", help="Output directory (default sources/lark-exports/<timestamp>)")
+    parser.add_argument(
+        "--output", help="Output directory (default sources/lark-exports/<timestamp>)"
+    )
     args = parser.parse_args()
 
     require_lark_cli()

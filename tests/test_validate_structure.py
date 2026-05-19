@@ -1,10 +1,10 @@
 """Tests for validate_structure.py."""
+
 from __future__ import annotations
 
 from pathlib import Path
 
 import pytest
-
 from validate_structure import StructureError, validate_structure
 
 

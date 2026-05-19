@@ -1,4 +1,5 @@
 """Tests for wiki_kpi_report.py."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -39,9 +40,7 @@ def test_count_pages_by_section_type() -> None:
 
 
 def test_compute_execution_first_full_compliance() -> None:
-    counts = {
-        "OPS-CS": {"HUB": 1, "MST": 1, "PROC": 1, "SOP": 3, "CHK": 1, "TMP": 1, "PBK": 1}
-    }
+    counts = {"OPS-CS": {"HUB": 1, "MST": 1, "PROC": 1, "SOP": 3, "CHK": 1, "TMP": 1, "PBK": 1}}
     result = compute_execution_first_compliance(counts)
     assert result["OPS-CS"]["compliance"] == 1.0
     assert result["OPS-CS"]["missing"] == []

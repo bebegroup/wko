@@ -12,6 +12,7 @@ Usage:
     python3 scripts/build_backlink_graph.py --source dist         # rendered output
     python3 scripts/build_backlink_graph.py --no-svg              # skip graphviz
 """
+
 from __future__ import annotations
 
 import argparse
@@ -21,7 +22,6 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
-
 
 PAGE_REF_RE = re.compile(r"\[\[([A-Z]+-[A-Z0-9]+-[A-Z]+-\d{3})\]\]")
 PAGE_CODE_IN_TITLE_RE = re.compile(r"^# ([A-Z]+-[A-Z0-9]+-[A-Z]+-\d{3})\s+(.+)$", re.MULTILINE)
@@ -58,7 +58,9 @@ def scan_directory(root: Path) -> dict[str, Any]:
     # First pass: enumerate pages
     for md_file in root.rglob("*.md"):
         # Skip meta dirs
-        if any(part in ("superpowers", "drafts", ".git") for part in md_file.relative_to(root).parts):
+        if any(
+            part in ("superpowers", "drafts", ".git") for part in md_file.relative_to(root).parts
+        ):
             continue
         content = md_file.read_text()
         title = extract_page_code_from_title(content)
@@ -68,7 +70,9 @@ def scan_directory(root: Path) -> dict[str, Any]:
 
     # Second pass: extract references
     for md_file in root.rglob("*.md"):
-        if any(part in ("superpowers", "drafts", ".git") for part in md_file.relative_to(root).parts):
+        if any(
+            part in ("superpowers", "drafts", ".git") for part in md_file.relative_to(root).parts
+        ):
             continue
         content = md_file.read_text()
         title = extract_page_code_from_title(content)
@@ -167,12 +171,16 @@ def main() -> int:
             dot_file = out_dir / "backlink.dot"
             dot_file.write_text(dot_content)
             svg_out = out_dir / "backlink-graph.svg"
-            subprocess.run(["dot", "-Tsvg", str(dot_file), "-o", str(svg_out)], check=True, timeout=30)
+            subprocess.run(
+                ["dot", "-Tsvg", str(dot_file), "-o", str(svg_out)], check=True, timeout=30
+            )
             print(f"✓ SVG → {svg_out}")
         except (FileNotFoundError, subprocess.CalledProcessError):
             print("⚠️  graphviz not installed, skip SVG (brew install graphviz)")
 
-    print(f"\n📊 {len(graph['pages'])} pages, {sum(len(v) for v in graph['forward'].values())} links, {len(graph['unresolved'])} unresolved")
+    print(
+        f"\n📊 {len(graph['pages'])} pages, {sum(len(v) for v in graph['forward'].values())} links, {len(graph['unresolved'])} unresolved"
+    )
     return 0
 
 

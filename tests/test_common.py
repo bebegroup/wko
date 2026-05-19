@@ -1,11 +1,11 @@
 """Tests for scripts/_common.py."""
+
 from __future__ import annotations
 
 import subprocess
 from pathlib import Path
 
 import pytest
-
 from _common import (
     load_config,
     require_lark_auth,

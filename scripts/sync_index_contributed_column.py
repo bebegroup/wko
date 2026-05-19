@@ -7,6 +7,7 @@ Usage:
     python3 scripts/sync_index_contributed_column.py              # dry-run
     python3 scripts/sync_index_contributed_column.py --confirm    # push lên Lark
 """
+
 from __future__ import annotations
 
 import argparse
@@ -14,7 +15,6 @@ import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any
 
 from _common import load_config, require_lark_auth, require_lark_cli
 
@@ -24,7 +24,10 @@ def get_contributors(file_path: Path) -> list[str]:
     try:
         r = subprocess.run(
             ["git", "log", "--format=%an", "--follow", str(file_path)],
-            capture_output=True, text=True, check=True, timeout=10,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=10,
         )
         # Unique, preserve order
         seen = set()

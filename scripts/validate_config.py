@@ -4,6 +4,7 @@ Usage:
     python3 scripts/validate_config.py              # lint với warnings
     python3 scripts/validate_config.py --strict     # warnings as errors
 """
+
 from __future__ import annotations
 
 import argparse
@@ -53,13 +54,9 @@ def validate(cfg: dict[str, Any], strict: bool = False) -> None:
     token = cfg["lark"]["wiki_root_token"]
     domain = cfg["lark"]["domain"]
     if domain not in url:
-        raise ValidationError(
-            f"lark.wiki_root_url domain không khớp lark.domain ({domain})"
-        )
+        raise ValidationError(f"lark.wiki_root_url domain không khớp lark.domain ({domain})")
     if token not in url:
-        raise ValidationError(
-            f"lark.wiki_root_url phải chứa wiki_root_token ({token})"
-        )
+        raise ValidationError(f"lark.wiki_root_url phải chứa wiki_root_token ({token})")
 
     # Taxonomy version
     version = cfg.get("taxonomy", {}).get("version", "unknown")
@@ -84,9 +81,7 @@ def validate(cfg: dict[str, Any], strict: bool = False) -> None:
     arc_append = cfg.get("policies", {}).get("arc_append_only", False)
     space_codes = {s["code"] for s in cfg["taxonomy"]["spaces"]}
     if arc_append and "ARC" not in space_codes:
-        raise ValidationError(
-            "policies.arc_append_only=true requires taxonomy.spaces có 'ARC'"
-        )
+        raise ValidationError("policies.arc_append_only=true requires taxonomy.spaces có 'ARC'")
 
     # Master registry code format
     for m in cfg.get("master_registry", []):
@@ -100,9 +95,7 @@ def validate(cfg: dict[str, Any], strict: bool = False) -> None:
     pol_rules = cfg.get("pol_mst_rules", {})
     primary_owners = pol_rules.get("primary_owner_table", {})
     all_section_codes = {
-        sec["code"]
-        for secs in cfg.get("taxonomy", {}).get("sections", {}).values()
-        for sec in secs
+        sec["code"] for secs in cfg.get("taxonomy", {}).get("sections", {}).values() for sec in secs
     }
     for policy_name, section_code in primary_owners.items():
         if all_section_codes and section_code not in all_section_codes:

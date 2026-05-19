@@ -10,6 +10,7 @@ Usage:
     python3 scripts/rebuild_hub_toc.py --section OPS-CS         # 1 section
     python3 scripts/rebuild_hub_toc.py --section OPS-CS --confirm  # push lên Lark
 """
+
 from __future__ import annotations
 
 import argparse
@@ -27,9 +28,20 @@ def list_children(parent_node_token: str) -> list[dict[str, Any]]:
     """List children pages of a Wiki node via lark-cli."""
     try:
         result = subprocess.run(
-            ["lark-cli", "wiki", "node", "list",
-             "--parent-node-token", parent_node_token, "--output", "json"],
-            capture_output=True, text=True, check=True, timeout=30,
+            [
+                "lark-cli",
+                "wiki",
+                "node",
+                "list",
+                "--parent-node-token",
+                parent_node_token,
+                "--output",
+                "json",
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=30,
         )
         return json.loads(result.stdout)
     except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
@@ -71,7 +83,20 @@ def render_hub_content(
     groups = group_pages_by_type(pages)
 
     # Order theo execution-first: HUB, MST, PROC, SOP, CHK, TMP, PBK, DBD, then others
-    type_order = ["MST", "PROC", "SOP", "CHK", "TMP", "PBK", "DBD", "POL", "DIC", "GDL", "LOG", "IDX"]
+    type_order = [
+        "MST",
+        "PROC",
+        "SOP",
+        "CHK",
+        "TMP",
+        "PBK",
+        "DBD",
+        "POL",
+        "DIC",
+        "GDL",
+        "LOG",
+        "IDX",
+    ]
 
     for t in type_order:
         if not groups.get(t):
@@ -87,12 +112,16 @@ def render_hub_content(
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append(f"→ ↑ [{cfg['company']['short_name']} Master Wiki Index]({cfg['lark']['wiki_root_url']})")
+    lines.append(
+        f"→ ↑ [{cfg['company']['short_name']} Master Wiki Index]({cfg['lark']['wiki_root_url']})"
+    )
 
     return "\n".join(lines) + "\n"
 
 
-def evaluate_branch_eligibility(pages: list[dict[str, Any]], cfg: dict[str, Any]) -> dict[str, bool]:
+def evaluate_branch_eligibility(
+    pages: list[dict[str, Any]], cfg: dict[str, Any]
+) -> dict[str, bool]:
     """Check if HUB nhánh nên được tạo dựa vào branch_hub_min_pages.
 
     Return dict mapping pattern_name → eligible (True/False).
@@ -112,9 +141,18 @@ def push_hub_to_lark(content: str, hub_obj_token: str) -> bool:
     tmp.write_text(content)
     try:
         subprocess.run(
-            ["lark-cli", "docs", "update", hub_obj_token,
-             "--content", str(tmp), "--api-version", "v2"],
-            check=True, timeout=60,
+            [
+                "lark-cli",
+                "docs",
+                "update",
+                hub_obj_token,
+                "--content",
+                str(tmp),
+                "--api-version",
+                "v2",
+            ],
+            check=True,
+            timeout=60,
         )
         return True
     except subprocess.CalledProcessError as e:
@@ -145,7 +183,7 @@ def main() -> int:
     if args.section:
         sections_to_rebuild = [args.section]
     else:
-        for space_code, secs in cfg["taxonomy"]["sections"].items():
+        for _space_code, secs in cfg["taxonomy"]["sections"].items():
             sections_to_rebuild.extend(s["code"] for s in secs)
 
     if args.confirm:
@@ -154,7 +192,10 @@ def main() -> int:
     for section_code in sections_to_rebuild:
         info = find_section_info(cfg, section_code)
         if not info:
-            print(f"⚠️  Section {section_code} không có trong taxonomy.sections, skip.", file=sys.stderr)
+            print(
+                f"⚠️  Section {section_code} không có trong taxonomy.sections, skip.",
+                file=sys.stderr,
+            )
             continue
 
         print(f"\n📑 Section {section_code} — {info['name']}")

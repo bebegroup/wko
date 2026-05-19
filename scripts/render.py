@@ -7,6 +7,7 @@ Usage:
     python3 scripts/render.py --watch                # dev mode
     python3 scripts/render.py --clean                # xóa dist/ trước
 """
+
 from __future__ import annotations
 
 import argparse
@@ -16,6 +17,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from _common import load_config
 from jinja2 import (
     Environment,
     FileSystemLoader,
@@ -23,8 +25,6 @@ from jinja2 import (
     TemplateError,
     UndefinedError,
 )
-
-from _common import load_config
 
 
 class RenderError(Exception):
@@ -135,9 +135,7 @@ def main() -> int:
             def on_modified(self, event):
                 if event.src_path.endswith(".md"):
                     try:
-                        skills_count = render_tree(
-                            repo_root / "skills", dist / "skills", cfg
-                        )
+                        skills_count = render_tree(repo_root / "skills", dist / "skills", cfg)
                         docs_count = render_tree(repo_root / "docs", dist / "docs", cfg)
                         print(f"♻️  Re-rendered ({skills_count}+{docs_count})")
                     except RenderError as e:

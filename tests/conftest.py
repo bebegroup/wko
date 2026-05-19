@@ -1,4 +1,5 @@
 """Shared pytest fixtures for wko tests."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -99,13 +100,25 @@ def sample_config() -> dict[str, Any]:
         "lark_bases": [],
         "master_index_fields": {
             "required": [
-                "Page Code", "Page Name", "Space", "Section", "Type",
-                "Hub Parent", "Owner", "Reviewer", "Status", "Version",
-                "Security Level", "Link",
+                "Page Code",
+                "Page Name",
+                "Space",
+                "Section",
+                "Type",
+                "Hub Parent",
+                "Owner",
+                "Reviewer",
+                "Status",
+                "Version",
+                "Security Level",
+                "Link",
             ],
             "recommended": [
-                "Source Type", "Source URL", "Effective Date",
-                "Review Cadence", "Impacted Pages",
+                "Source Type",
+                "Source URL",
+                "Effective Date",
+                "Review Cadence",
+                "Impacted Pages",
             ],
         },
         "policies": {

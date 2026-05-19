@@ -1,4 +1,5 @@
 """Tests for content_quality_audit.py."""
+
 from __future__ import annotations
 
 from typing import Any

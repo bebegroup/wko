@@ -1,11 +1,11 @@
 """Tests for scripts/render.py."""
+
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
 
 import pytest
-
 from render import RenderError, render_string, render_tree
 
 
@@ -31,9 +31,7 @@ def test_render_tree_creates_dist(tmp_repo: Path, sample_config: dict[str, Any])
     src = tmp_repo / "skills"
     dst = tmp_repo / "dist" / "skills"
 
-    (src / "01-test.md").write_text(
-        "# {{ company.name }}\n\nIndustry: {{ company.industry }}"
-    )
+    (src / "01-test.md").write_text("# {{ company.name }}\n\nIndustry: {{ company.industry }}")
     (src / "subdir").mkdir()
     (src / "subdir" / "nested.md").write_text("Nested: {{ company.short_name }}")
 
@@ -50,10 +48,7 @@ def test_render_tree_creates_dist(tmp_repo: Path, sample_config: dict[str, Any])
 
 def test_render_raw_block_preserves_literal(sample_config: dict[str, Any]) -> None:
     """Code block với {% raw %}...{% endraw %} giữ literal {{ }}."""
-    template = (
-        "Outside: {{ company.name }}\n\n"
-        "```\n{% raw %}{{ literal }}{% endraw %}\n```"
-    )
+    template = "Outside: {{ company.name }}\n\n" "```\n{% raw %}{{ literal }}{% endraw %}\n```"
     out = render_string(template, sample_config)
     assert "Acme Foods" in out
     assert "{{ literal }}" in out

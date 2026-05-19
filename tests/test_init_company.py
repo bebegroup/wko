@@ -1,4 +1,5 @@
 """Tests for init_company.py — build_config_from_answers logic."""
+
 from __future__ import annotations
 
 from typing import Any

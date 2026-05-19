@@ -1,4 +1,5 @@
 """Auto-generate skills/README.md + docs/README.md từ list files."""
+
 from __future__ import annotations
 
 import argparse

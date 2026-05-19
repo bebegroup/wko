@@ -1,4 +1,5 @@
 """Lint folder structure of wko repo."""
+
 from __future__ import annotations
 
 import argparse

@@ -1,4 +1,5 @@
 """Smoke test for --watch mode. Marked interactive — skip in CI."""
+
 from __future__ import annotations
 
 import subprocess

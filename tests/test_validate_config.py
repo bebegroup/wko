@@ -1,11 +1,11 @@
 """Tests for scripts/validate_config.py."""
+
 from __future__ import annotations
 
 import copy
 from typing import Any
 
 import pytest
-
 from validate_config import ValidationError, validate
 
 

@@ -1,4 +1,5 @@
 """Tests for pull_from_lark.py."""
+
 from __future__ import annotations
 
 from pull_from_lark import slugify

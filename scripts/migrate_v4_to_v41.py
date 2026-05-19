@@ -11,6 +11,7 @@ Usage:
     python3 scripts/migrate_v4_to_v41.py --input v4-tree.json --output dist/v41-mapping.json
     python3 scripts/migrate_v4_to_v41.py --interactive   # review từng mapping
 """
+
 from __future__ import annotations
 
 import argparse
@@ -19,7 +20,6 @@ import re
 import sys
 from pathlib import Path
 from typing import Any
-
 
 # V4 → V4.1 SPACE mapping
 SPACE_MAPPING: dict[str, str] = {
@@ -81,27 +81,33 @@ def build_migration_plan(pages: list[dict[str, Any]]) -> dict[str, Any]:
         new_code = migrate_page_code(old_code)
         if new_code:
             if new_code.startswith("ARC-OLD-"):
-                archives.append({
-                    "old_code": old_code,
-                    "new_code": new_code,
-                    "page_name": p.get("page_name", ""),
-                    "reason": "EMG space deprecated in V4.1",
-                })
+                archives.append(
+                    {
+                        "old_code": old_code,
+                        "new_code": new_code,
+                        "page_name": p.get("page_name", ""),
+                        "reason": "EMG space deprecated in V4.1",
+                    }
+                )
             else:
-                renames.append({
-                    "old_code": old_code,
-                    "new_code": new_code,
-                    "page_name": p.get("page_name", ""),
-                    "reason": "COM → GEN mapping",
-                })
+                renames.append(
+                    {
+                        "old_code": old_code,
+                        "new_code": new_code,
+                        "page_name": p.get("page_name", ""),
+                        "reason": "COM → GEN mapping",
+                    }
+                )
 
         if suggest_proc_reclassification(p):
-            proc_suggestions.append({
-                "code": old_code,
-                "page_name": p.get("page_name", ""),
-                "suggested_new_type": "PROC",
-                "reason": "Title contains 'luồng' or similar multi-role indicator",
-            })
+            proc_suggestions.append(
+                {
+                    "code": old_code,
+                    "page_name": p.get("page_name", ""),
+                    "suggested_new_type": "PROC",
+                    "reason": "Title contains 'luồng' or similar multi-role indicator",
+                }
+            )
 
     return {
         "summary": {

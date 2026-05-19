@@ -1,0 +1,309 @@
+# company.config.yaml.example — Cấu hình duy nhất cho mỗi client wko
+#
+# Copy thành `company.config.yaml` (đã gitignored — chứa Lark token).
+# Hoặc chạy `python3 scripts/init_company.py` cho interactive setup.
+#
+# Default taxonomy: V4.1 Execution-First (7 SPACE, 13 TYPE, HUB-001 sticky).
+# Tham khảo:
+#   - docs-meta/ARCHITECTURE.md — kiến trúc placeholder + render
+#   - examples/ — 3 ví dụ company shape khác nhau
+
+# ─── 1. IDENTITY ──────────────────────────────────────────────
+company:
+  name: "Acme Foods"                        # → {{ company.name }}
+  short_name: "Acme"                        # → {{ company.short_name }}
+  legal_entities:                           # → {{ company.legal_entities }}
+    - "Acme Foods Co., Ltd"
+  industry: "F&B / Gia vị"                  # → {{ company.industry }}
+  founded_year: 2020
+  hq_country: "VN"                          # vn|us|sg|... (Lark vs Feishu detect)
+
+# ─── 2. LARK INSTANCE ─────────────────────────────────────────
+lark:
+  domain: "larksuite.com"                   # larksuite.com | feishu.cn
+  tenant_subdomain: "acme"                  # → URL: acme.sg.larksuite.com
+  region: "sg"                              # sg | cn | us
+  wiki_root_token: "Yix7wqABCDEFGHIJ"       # → {{ lark.wiki_root_token }}
+  wiki_root_url: "https://acme.sg.larksuite.com/wiki/Yix7wqABCDEFGHIJ"
+  master_index:
+    node_token: "UxOkABCDEFGHIJKL"          # tạo sau ở Bước 7 ONBOARDING
+    obj_token: "Vy3RABCDEFGHIJKL"
+  # APP_ID, APP_SECRET ← .env (KHÔNG đặt ở đây)
+
+# ─── 3. WIKI TAXONOMY (V4.1 Execution-First) ──────────────────
+taxonomy:
+  version: "v4.1"
+  philosophy: "execution-first"             # mở Wiki vào là làm được việc
+
+  # 7 SPACE (V4.1) — bỏ COM, EMG so với V4
+  spaces:
+    - code: SYS
+      name: "Wiki Operating System"
+      order: "00"
+      icon: "⚙️"
+      owner: "IT"
+      purpose: "Hệ thống Wiki: hướng dẫn dùng, Index gốc, change log"
+    - code: GEN
+      name: "Chung / General"
+      order: "01"
+      icon: "🏢"
+      owner: "HCNS + Admin"
+      purpose: "Nền tảng công ty, onboarding, công cụ, thuật ngữ"
+    - code: INT
+      name: "Nội bộ / Internal"
+      order: "02"
+      icon: "🤝"
+      owner: "HCNS / Kế toán / Xfn"
+      purpose: "HR, Finance, O3K, Phối hợp liên phòng"
+    - code: OPS
+      name: "Vận hành / Operations"
+      order: "03"
+      icon: "⚡"
+      owner: "Operations Lead"
+      purpose: "CS, Kho, Sàn, Hoá đơn, PIM, MFG, MKT, Livestream"
+    - code: BOD
+      name: "Ban giám đốc / Board"
+      order: "04"
+      icon: "👔"
+      owner: "CEO + BOD"
+      purpose: "Chiến lược, FIN, HR cấp cao, Governance"
+    - code: TMP
+      name: "Templates"
+      order: "05"
+      icon: "📋"
+      owner: "Admin"
+      purpose: "Mẫu chung (meeting, decision log, RACI, …)"
+    - code: ARC
+      name: "Archive"
+      order: "99"
+      icon: "🗄"
+      owner: "Admin"
+      append_only: true
+      purpose: "Lưu trữ append-only — không tái dùng mã"
+
+  # 13 TYPE (V4.1) — thêm PROC + GDL so với V4
+  page_types:
+    - code: HUB
+      name: "Hub / Mục lục"
+      question: "Tôi đang ở đâu trong luồng?"
+      mandatory_per_section: true
+    - code: MST
+      name: "Master (luật/dữ liệu gốc)"
+      question: "Luật gốc / dữ liệu gốc là gì?"
+      sub_types: ["bridge", "standalone"]   # bridge derive từ POL, standalone tự định
+    - code: PROC
+      name: "Process (luồng đa vai trò)"
+      question: "Ai làm, làm khi nào?"
+      new_in_v41: true
+    - code: SOP
+      name: "Standard Operating Procedure"
+      question: "Tôi phải làm từng bước gì?"
+    - code: CHK
+      name: "Checklist"
+      question: "Tôi đã làm đủ chưa?"
+    - code: TMP
+      name: "Template"
+      question: "Tôi dùng mẫu nào?"
+    - code: PBK
+      name: "Playbook (lệch / lỗi / nhánh)"
+      question: "Lệch / lỗi / có nhánh thì sao?"
+    - code: DBD
+      name: "Dashboard"
+      question: "Kết quả có ổn không?"
+      requires_real_data: true              # chỉ tạo khi có số liệu thật
+    - code: POL
+      name: "Policy (luật ngoài)"
+      scope: "external_only"                # POL chỉ cho luật/policy bên ngoài
+      mandatory_sections: 8
+    - code: DIC
+      name: "Dictionary (thuật ngữ)"
+      condition: "chỉ tạo khi thuật ngữ gây sai thao tác"
+    - code: GDL
+      name: "Guideline (luật mềm)"
+      condition: "chỉ tạo khi ảnh hưởng hành vi thực thi"
+      new_in_v41: true
+    - code: LOG
+      name: "Log (nhật ký / lịch sử quyết định)"
+    - code: IDX
+      name: "Index"
+
+  # SECTION mặc định mỗi SPACE (V4.1 blueprint)
+  sections:
+    SYS:
+      - { code: "SYS-00", name: "Wiki Operating System" }
+      - { code: "SYS-01", name: "Quy tắc hệ thống Wiki" }
+    GEN:
+      - { code: "GEN-01", name: "Nền tảng công ty" }
+      - { code: "GEN-02", name: "Nhân viên mới" }
+      - { code: "GEN-03", name: "Công cụ & hệ thống" }
+      - { code: "GEN-04", name: "Thuật ngữ & định nghĩa" }
+    INT:
+      - { code: "INT-HR", name: "Nhân sự" }
+      - { code: "INT-FIN", name: "Kế toán nội bộ" }
+      - { code: "INT-O3K", name: "Mục tiêu & KPI (OKR/O3K)" }
+      - { code: "INT-XFN", name: "Phối hợp liên phòng" }
+    OPS:
+      - { code: "OPS-CS", name: "CSKH" }
+      - { code: "OPS-WH", name: "Kho vận" }
+      - { code: "OPS-ECM", name: "Bán hàng đa kênh (TikTok/Shopee/Web/FB)" }
+      - { code: "OPS-INV", name: "Hoá đơn / Settlement" }
+      - { code: "OPS-PIM", name: "PIM (catalog sản phẩm)" }
+      - { code: "OPS-MFG", name: "Sản xuất / BOM / QC" }
+      - { code: "OPS-MKT", name: "Marketing" }
+      - { code: "OPS-LIVE", name: "Livestream" }
+    BOD:
+      - { code: "BOD-STR", name: "Chiến lược" }
+      - { code: "BOD-FIN", name: "Tài chính quản trị" }
+      - { code: "BOD-HR", name: "Nhân sự cấp cao" }
+      - { code: "BOD-GOV", name: "Governance & Risk" }
+    TMP:
+      - { code: "TMP-GEN", name: "Templates chung" }
+    ARC:
+      - { code: "ARC-OLD", name: "Lưu trữ tài liệu cũ" }
+
+  # Format mã page
+  page_code_format: "{space}-{section_suffix}-{type}-{number:03d}"
+  # section_suffix = phần sau dấu '-' của section.code
+  #   vd: SYS-00 → suffix "00" → "SYS-00-HUB-001"
+  #   vd: OPS-CS → suffix "CS" → "OPS-CS-SOP-001"
+
+# ─── 4. HUB RULES ─────────────────────────────────────────────
+hub_rules:
+  master_hub_number: "001"                  # HUB-001 = Master entry (sticky)
+  # V4.1 doc gốc dùng "HUB-000" nhưng repo Thích Cay đang chạy HUB-001.
+  # Default "001" cho consistency. Override sang "000" nếu muốn.
+  branch_hub_min_pages: 3                   # tạo HUB nhánh chỉ khi ≥ 3 page con
+  branch_patterns:
+    - name: "A — sub-area"
+      example: "OPS-ECM với HUB-001 TikTok / HUB-002 Shopee"
+    - name: "B — audience"
+      example: "OPS-PIM với HUB cho CSKH/MKT/ECM/WH/FIN/LIVE/MFG"
+    - name: "C — lifecycle/phase"
+      example: "OPS-LIVE với HUB Trước/Trong/Sau live"
+    - name: "D — role"
+      example: "INT-HR với HUB Nhân viên/Leader/HCNS Ops"
+  hub_parent_required: true                 # mọi page phải có Hub Parent
+
+# ─── 5. EXECUTION-FIRST POLICY ───────────────────────────────
+execution_first:
+  enforce: true
+  section_formula:
+    required:
+      - "1 HUB"
+      - "1-2 MST"
+      - "1 PROC"
+      - "3-5 SOP"
+      - "1 CHK"
+      - "1 TMP"
+      - "1 PBK"
+    optional_when_needed:
+      - "0-1 DBD (chỉ khi có số liệu thật)"
+      - "0-1 DIC (chỉ khi thuật ngữ gây sai thao tác)"
+      - "0-1 GDL (chỉ khi ảnh hưởng hành vi)"
+      - "0-1 POL (chỉ external)"
+  page_purpose_questions:
+    - "Tôi đang ở đâu trong luồng? → HUB"
+    - "Ai làm, làm khi nào? → PROC"
+    - "Tôi phải làm từng bước gì? → SOP"
+    - "Tôi đã làm đủ chưa? → CHK"
+    - "Tôi dùng mẫu nào? → TMP"
+    - "Lệch / lỗi / có nhánh? → PBK"
+    - "Kết quả có ổn không? → DBD"
+    - "Luật gốc / dữ liệu gốc? → MST"
+  rejection_rules:
+    - "Vì nên có (không phục vụ thực thi cụ thể)"
+    - "DIC mà thuật ngữ không gây sai thao tác"
+    - "GDL mà guideline không ảnh hưởng cách làm"
+    - "DBD mà chưa có source số liệu thật"
+
+# ─── 6. POL vs MST RULES ──────────────────────────────────────
+pol_mst_rules:
+  pol_scope: "external_only"
+  mst_types: ["bridge", "standalone"]
+  pol_primary_owner_per_section: true
+  primary_owner_table:
+    "TikTok/Shopee/Web/FB policy": "OPS-ECM"
+    "TikTok Ads / Meta Ads policy": "OPS-ECM"
+    "Luật Lao động + BHXH + NĐ lương": "INT-HR"
+    "Luật Thuế + Hóa đơn điện tử": "INT-FIN"
+    "Luật Quảng cáo": "OPS-MKT"
+    "Luật ATTP + QCVN": "OPS-MFG"
+    "Chuẩn đóng gói VN": "OPS-WH"
+    "NĐ 13/2023 dữ liệu cá nhân": "BOD-GOV"
+    "Luật BVNTD / DN / Cạnh tranh": "BOD-GOV"
+    "ISO / Chuẩn quốc tế": "BOD-GOV"
+  pol_required_sections: 8
+  mst_bridge_required_sections: 5
+  cross_section_rule: "link, không copy"
+
+# ─── 7. ORG STRUCTURE ─────────────────────────────────────────
+org:
+  departments:
+    - { code: HCNS, name: "Hành chính – Nhân sự", head_role: "HCNS Lead" }
+    - { code: KT, name: "Kế toán", head_role: "Kế toán trưởng" }
+    - { code: KD, name: "Kinh doanh / Sales", head_role: "Sales Lead" }
+    # … client điền thêm
+
+# ─── 8. MASTER REGISTRY (MASTER bắt buộc — mặc định V4.1) ────
+master_registry:
+  - code: "SYS-00-MST-001"
+    name: "Master Registry"
+    owner: "Admin"
+    required: true
+  - code: "INT-HR-MST-001"
+    name: "MASTER ma trận vị trí & JD"
+    owner: "HCNS Lead"
+    required: true
+  - code: "INT-FIN-MST-002"
+    name: "MASTER quy trình lương"
+    owner: "Kế toán trưởng"
+    required: true
+  # … client điền thêm theo nhu cầu công ty
+
+# ─── 9. INTEGRATIONS ──────────────────────────────────────────
+integrations:
+  contributor_group_email: "wiki@acme.com"  # group nội bộ gửi draft review
+  reviewer_bot_webhook: ""                  # Lark bot webhook URL (optional)
+  reviewer_bot_name: "@wiki-reviewer"
+  contributor_group_chat_id: ""             # cho wiki_reviewer_bot.py filter
+
+# ─── 10. LARK BASE CONNECTIONS ────────────────────────────────
+lark_bases:
+  - name: "HCNS Database"
+    base_token: "bascn123..."
+    purpose: "Nhân sự, JD, KPI"
+  - name: "OKR Tracker"
+    base_token: "bascn456..."
+    purpose: "OKR cycles"
+  # … client điền 5-10 Base
+
+# ─── 11. MASTER INDEX FIELDS (V4.1) ───────────────────────────
+master_index_fields:
+  required:
+    - "Page Code"
+    - "Page Name"
+    - "Space"
+    - "Section"
+    - "Type"
+    - "Hub Parent"                          # MỚI V4.1
+    - "Owner"
+    - "Reviewer"
+    - "Status"
+    - "Version"
+    - "Security Level"
+    - "Link"
+  recommended:                              # MỚI V4.1
+    - "Source Type"                         # Internal / External / Derived / Manual
+    - "Source URL"                          # cho External Policy
+    - "Effective Date"                      # ngày policy/luật/quy trình hiệu lực
+    - "Review Cadence"                      # monthly / quarterly / yearly / ad-hoc
+    - "Impacted Pages"                      # pages chịu ảnh hưởng
+
+# ─── 12. POLICIES ─────────────────────────────────────────────
+policies:
+  page_status_values: ["⬜ Draft", "🔄 Active", "📋 Deprecated", "✅ Archived"]
+  default_status: "⬜ Draft"
+  publish_requires_review: true
+  review_quorum: 1
+  arc_append_only: true                     # ARC không tái dùng mã
+  no_renumber_on_rename: true               # đổi title không đổi mã
